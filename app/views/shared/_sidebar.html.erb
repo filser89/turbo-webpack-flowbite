@@ -1,0 +1,11 @@
+<div id="sidebar" data-turbo-permanent class="sidenav app-sidenav" data-toggle-class-target="id" value="open">
+  <% links = [{title: 'home', path: root_path}, {title: 'dogs', path: dogs_path}]  %>
+  <ul>
+    <% links.each do |link| %>
+      <li>
+        <%#= link_to I18n.t("sidebar.#{link[:title]}"), link[:path], class: 'waves-effect waves-orange pointer', data: {'turbo': 'false'} %>
+        <%= link_to link[:title], link[:path], class: 'waves-effect waves-orange pointer', data: {'turbo-action': 'replace'} %>
+      </li>
+    <% end %>
+  </ul>
+</div>
