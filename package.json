@@ -14,6 +14,7 @@
     "webpack-cli": "^4.9.2"
   },
   "scripts": {
+    "postinstall": "patch-package",
     "build": "webpack --config webpack.config.js",
     "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css"
   }
