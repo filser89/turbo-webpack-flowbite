@@ -4,5 +4,11 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller"
+import DarkModeController from "./dark_mode_controller.js"
+application.register("dark-mode", DarkModeController)
+
+import HelloController from "./hello_controller.js"
 application.register("hello", HelloController)
+
+import SidebarController from "./sidebar_controller.js"
+application.register("sidebar", SidebarController)
