@@ -1,3 +1,5 @@
+<% common_routes = [{controller: 'devise/sessions', action: :new}, {controller: 'devise/registrations', action: :new} ] %>
+<% is_common = common_routes.any? {|route| current_page?(route)} %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -8,14 +10,18 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
-  <body data-controller="sidebar dark-mode">
+  <body data-controller='dark-mode <%= "sidebar" unless is_common %>'>
     <!-- <body> -->
     <%= render 'shared/navbar' %>
     <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
-      <%= render 'shared/sidebar' %>
+      <% unless is_common  %>
+        <%= render 'shared/sidebar' %>
+      <% end %>
       <div id="main-content" class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
         <main>
-          <%= yield %>
+          <div class="px-4 pt-6">
+            <%= yield %>
+          </div>
         </main>
       </div>
     </div>
