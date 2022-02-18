@@ -2,7 +2,9 @@ class Admin::DataController < ApplicationController
   before_action :set_model, only: %i[index show create update destroy]
   before_action :set_object, only: %i[show update destroy]
   def index
-    @objects = @model.all
+    @queries = [:index_set]
+    sort_objects if params[:order].present? && params[:sort_by].present?
+    @objects = @queries.inject(@model){|o, a| o.send(*a)}
   end
 
   def show
@@ -15,6 +17,10 @@ class Admin::DataController < ApplicationController
   end
 
   private
+
+  def sort_objects
+    @queries << [:order, {params[:sort_by] => params[:order]}]
+  end
 
   def set_model
     # # /api/v1/:name

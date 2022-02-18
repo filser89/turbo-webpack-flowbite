@@ -2,14 +2,24 @@
 
 module Admin::DataHelper
 
-  # checks if the mrethod is anassociation
+  # checks if the mrethod is an association
   def is_assoc?(method)
     @model.reflect_on_association(strip_id(method)).present?
   end
 
+  # checks if method is an attribute
+  def is_attribute?(method)
+    @model.new.attributes.keys.map(&:to_sym).include?(method)
+  end
+
   # removes _id from method
+  # :user_id => 'user'
   def strip_id(method)
     method.to_s.gsub(/_id/, '')
+  end
+
+  def resource_name
+    @model.to_s.tableize
   end
 
   # displays the association with one of the display methods or id
