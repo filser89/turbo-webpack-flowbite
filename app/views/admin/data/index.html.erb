@@ -1,5 +1,4 @@
 <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"><%= table_name %></h1>
-</table>
 <div class="flex flex-col">
   <div class="overflow-x-auto shadow-md sm:rounded-lg">
     <div class="inline-block min-w-full align-middle">
@@ -9,7 +8,7 @@
             <tr>
               <% @model.index_methods.each do |method| %>
                 <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                  <%= column_name(method) %> <%= link_to ,  %>
+                  <%= column_name(method) %>
                 </th>
               <% end %>
             </tr>
