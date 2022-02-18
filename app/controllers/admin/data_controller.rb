@@ -28,4 +28,10 @@ class Admin::DataController < ApplicationController
     #     @model = db_index[params[:name]].constantize # "users" => User
     @model = params[:resource_name].classify.constantize
   end
+
+  def set_object
+    # Take model from "set_model"
+    # User.find(1)
+    @model.find(params[:id])
+  end
 end

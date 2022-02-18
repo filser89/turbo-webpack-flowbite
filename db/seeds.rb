@@ -11,8 +11,14 @@ User.destroy_all
 puts "Deleted everything"
 user = User.create!(email: 'email@mail.ru', password: '123456')
 puts "Created a user"
-product = Product.create!(name: 'Dog food', description: 'Very tasty dog food')
-puts "Created a product"
-order = Order.create!(user: user, product: product)
-
-puts "Created an order"
+animals = %w[dog cat pig goat cow turtle]
+animals.each do |animal|
+  product = Product.create!(
+    name: "#{animal} food",
+    description: "Very tasty #{animal} food",
+    quantity: (1...20).to_a.sample
+  )
+  puts "Created a product #{product.name}"
+  order = Order.create!(user:, product:)
+  puts "Created an order for #{product.name}"
+end

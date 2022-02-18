@@ -1,3 +1,23 @@
+<!-- Helpers  -->
+<%
+  # checks if the method is an association, works for :user and :user_id
+  def is_assoc?(method)
+    @model.reflect_on_association(strip_id(method)).present?
+  end
+
+  # removes _id from method
+  def strip_id(method)
+    method.to_s.gsub('_id', '')
+  end
+
+  def assoc_display(object, method)
+    # displays the association with one of the methods or by id
+    assoc = object.send(strip_id(method))
+    display_methods = %i[full_name name last_name title email]
+    display_method = display_methods.find {|m| assoc.respond_to?(m)} || :id
+    assoc.send(display_method)
+  end
+ %>
 <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"><%= @model.to_s.humanize.pluralize %></h1>
 </table>
 <div class="flex flex-col">
@@ -18,7 +38,15 @@
             <% @objects.each do |object| %>
               <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
                 <% @model.index_methods.each do |method| %>
-                  <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"><%= object.send(method) %></td>
+                  <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <%=
+                      if is_assoc?(method)
+                        link_to assoc_display(object, method) ,admin_data_show_path(resource_name: strip_id(method).pluralize, id: object.send(method))
+                      else
+                          object.send(method)
+                      end
+                      %>
+                  </td>
                 <% end %>
               </tr>
             <% end %>
