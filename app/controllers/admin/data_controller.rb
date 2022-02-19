@@ -4,6 +4,7 @@ class Admin::DataController < ApplicationController
   def index
     @queries = [:index_set]
     sort_objects if params[:order].present? && params[:sort_by].present?
+    paginate_objects
     @objects = @queries.inject(@model){|o, a| o.send(*a)}
   end
 
@@ -19,7 +20,12 @@ class Admin::DataController < ApplicationController
   private
 
   def sort_objects
-    @queries << [:order, {params[:sort_by] => params[:order]}]
+    @queries << [:order, { params[:sort_by] => params[:order] }]
+  end
+
+  def paginate_objects
+    @queries << [:page, params[:page]]
+    @queries << [:per, params[:per]]
   end
 
   def set_model
