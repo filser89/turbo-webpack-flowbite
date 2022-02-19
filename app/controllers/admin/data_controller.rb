@@ -1,11 +1,14 @@
 class Admin::DataController < ApplicationController
   before_action :set_model, only: %i[index show create update destroy]
   before_action :set_object, only: %i[show update destroy]
+  before_action :destructure_params, only: %i[index]
+
   def index
     @queries = [:index_set]
-    sort_objects if params[:order].present? && params[:sort_by].present?
+    sort_objects# if params[:order].present? && params[:sort_by].present?
     paginate_objects
-    @objects = @queries.inject(@model){|o, a| o.send(*a)}
+    p "===========@queries", @queries
+    @objects = @queries.inject(@model) { |o, a| o.send(*a) }
   end
 
   def show
@@ -19,8 +22,40 @@ class Admin::DataController < ApplicationController
 
   private
 
+  # converts json to a hash if possible or returns a value
+  def parse_json_if_can(val)
+    return val unless val.is_a? String
+
+    JSON.parse(val)
+  rescue JSON::ParserError => _e
+    val
+  end
+
+  def set_sort_params
+    sp = parse_json_if_can(params[:sort_params])
+    p 'sp================', sp
+    pars = {}
+    sp.each_key { |k| pars[k.to_sym] = sp[k] }
+    p '===================pars', pars
+    pars
+  end
+
+  def destructure_params
+    @sort_params = set_sort_params if params[:sort_params].present?
+    set_query_params
+  end
+
+  def set_query_params
+    @query_params = {
+      sort_params: @sort_params,
+      per: params[:per]
+    }
+  end
+
   def sort_objects
-    @queries << [:order, { params[:sort_by] => params[:order] }]
+    return unless @sort_params.present?
+
+    @queries << [:order, { @sort_params[:sort_by] => @sort_params[:order] }]
   end
 
   def paginate_objects

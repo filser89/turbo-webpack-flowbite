@@ -12,3 +12,4 @@
 <li class="page<%= ' current' if page.current? %> ">
   <%= link_to page, url, {remote: remote, rel: page.rel, class: page.current? ? current_classes : classes, aria: {current: "#{page.current? ? 'page' : ''}"} } %>
 </li>
+<!-- <p> <%#= url %> </p> -->

@@ -2,6 +2,28 @@
 
 module Admin::DataHelper
 
+  def build_value_from_hash(hash)
+    val = ''
+    hash.each_key { |k| val += "[#{k}][#{hash[k]}]"}
+    val
+  end
+
+  # creates hidden inputs for the form to keep all the query params
+  def hidden_query_inputs(f)
+    @query_params.each_key do |qp|
+      if @query_params[qp].present?
+        next if qp == :per
+        f.hidden_field qp
+      end
+    end
+  end
+
+  # merges existing params for sorting/pagination/filters with new query params
+  def merged_params(new_params = {})
+    # h = {resource_name: resource_name}.merge(new_params)
+    @query_params.merge(new_params)
+  end
+
   # checks if the mrethod is an association
   def is_assoc?(method)
     @model.reflect_on_association(strip_id(method)).present?
