@@ -1,0 +1,4 @@
+<h1>Hi I am <%= @model.to_s.humanize %> <%= @object.display_self%></h1>
+<% @object.show_lists.each do |list| %>
+  <%= render 'shared/list', model: instance_variable_get(:"@#{list}_model"), objects: instance_variable_get(:"@#{list}"), parent: @object, q: instance_variable_get(:"@#{list}_q"), query_params: {}  %>
+<% end %>

@@ -1,4 +1,7 @@
-<h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"><%= table_name %></h1>
+<div class="flex justify-between">
+  <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"><%= table_name %></h1>
+  <%#= render 'admin/filter/filters_form' %>
+</div>
 <div class="flex flex-col">
   <div class="overflow-x-auto shadow-md sm:rounded-lg">
     <div class="inline-block min-w-full align-middle">
@@ -53,3 +56,9 @@
   <%= paginate @objects, remote: true %>
 </div>
 <p> <%= @query_params %> </p>
+<%#= search_form_for @q do%>
+  <%# @model.filter_methods.each do |method| %>
+    <%#= f.label :"#{method}_cont" %>
+    <%#= f.search_field :"#{method}_cont" %>
+    <%# end %>
+    <%# end %>

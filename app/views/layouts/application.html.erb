@@ -12,7 +12,6 @@
   </head>
   <body data-controller='dark-mode <%= "sidebar" unless is_common %>'>
     <!-- <body> -->
-    <%= render 'shared/navbar' %>
     <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
       <% unless is_common  %>
         <%= render 'shared/sidebar' %>

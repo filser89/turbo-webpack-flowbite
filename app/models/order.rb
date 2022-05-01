@@ -7,4 +7,5 @@ class Order < ApplicationRecord
     delivered: 'delivered',
     completed: 'completed'
   }
+
 end

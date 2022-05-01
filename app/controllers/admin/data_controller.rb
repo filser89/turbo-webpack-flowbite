@@ -4,11 +4,13 @@ class Admin::DataController < ApplicationController
   before_action :destructure_params, only: %i[index]
 
   def index
-    @queries = [:index_set]
+    @q = @model.ransack(params[:q])
+    @queries = [:result, :index_set]
     sort_objects# if params[:order].present? && params[:sort_by].present?
     paginate_objects
+    # ransack_objects
     p "===========@queries", @queries
-    @objects = @queries.inject(@model) { |o, a| o.send(*a) }
+    @objects = @queries.inject(@q) { |o, a| o.send(*a) }
   end
 
   def show
@@ -21,6 +23,10 @@ class Admin::DataController < ApplicationController
   end
 
   private
+
+  # def ransack_objects
+  #   @queries << :ransack
+  # end
 
   # converts json to a hash if possible or returns a value
   def parse_json_if_can(val)

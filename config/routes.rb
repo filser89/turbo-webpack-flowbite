@@ -8,18 +8,59 @@ Rails.application.routes.draw do
   resources :user, only: %i[show]
 
   # admin CRUD routes
+
   namespace :admin do
-    scope ':resource_name', resource_name: /#{ApplicationRecord.admin_models.join('|')}/ do
-    # scope ':resource_name' do
-    get    '/'                      => 'data#index',          as: 'data_index'
-    get    '/:id'                   => 'data#show',           as: 'data_show'
-    post   '/'                      => 'data#create',         as: 'data_create'
-    put   '/:id'                   => 'data#update',         as: 'data_update'
-    patch  '/:id'                   => 'data#update',         as: 'data_update_patch'
-    # post   '/:id/rotate'            => 'data#rotate_image',   as: 'rotate_image'
-    # post   '/:id/bookmark/:index'   => 'data#bookmark_image', as: 'bookmark_image'
-    # post   '/:id/:index'            => 'data#delete_image',   as: 'delete_image'
-    delete '/:id'                   => 'data#destroy',        as: 'data_destroy'
+    ApplicationRecord.admin_resources.each do |admin_resource|
+      resources admin_resource.model_name.route_key do
+        admin_resource.show_lists.each do |list|
+          resources list, only: %i[] do
+            collection do
+              match 'search' => "#{admin_resource.model_name.plural}#search",
+                via: %i[get post],
+                as: :search,
+                defaults: { parent_model: admin_resource, model: list.to_s.singularize.capitalize.constantize }
+            end
+          end
+        end
+        collection do
+          match 'search' => "#{admin_resource.model_name.plural}#search", via: %i[get post], as: :search
+        end
+      end
+    end
+
+    # resources :products do
+    #   Product.show_lists.each do |list|
+    #     resources list, only: %i[index] do
+    #       match 'search' => 'products#search' , via: [:get, :post], as: :search
+    #     end
+    #   end
+    #   collection do
+    #     match 'search' => 'products#search', via: [:get, :post], as: :search
+    #   end
+    # end
+    # resources :users do
+    #   User.show_lists.each do |list|
+    #     resources list, only: %i[index] #do
+    #     #   match 'search' => ''
+    #     # end
+    #   end
+    #   collection do
+    #     match 'search' => 'users#search', via: [:get, :post], as: :search
+    #   end
+    # end
+    #   scope ':resource_name', resource_name: /#{ApplicationRecord.admin_models.join('|')}/ do
+    #   # scope ':resource_name' do
+    #   get    '/'                      => 'data#index',          as: 'data_index'
+    #   get    '/:id'                   => 'data#show',           as: 'data_show'
+    #   post   '/'                      => 'data#create',         as: 'data_create'
+    #   put   '/:id'                   => 'data#update',         as: 'data_update'
+    #   patch  '/:id'                   => 'data#update',         as: 'data_update_patch'
+    #   # post   '/:id/rotate'            => 'data#rotate_image',   as: 'rotate_image'
+    #   # post   '/:id/bookmark/:index'   => 'data#bookmark_image', as: 'bookmark_image'
+    #   # post   '/:id/:index'            => 'data#delete_image',   as: 'delete_image'
+    #   delete '/:id'                   => 'data#destroy',        as: 'data_destroy'
+    # end
   end
 end
-end
+
+# admin/users/#{id}/orders/
