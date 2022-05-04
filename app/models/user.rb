@@ -8,6 +8,9 @@ class User < ApplicationRecord
   has_many :orders, dependent: :destroy
   has_many :products, through: :orders
 
+  # kaminari
+  paginates_per 5
+
   def self.index_methods
     %i[email]
   end

@@ -11,11 +11,11 @@ List options:
   <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"><%= table_header(model) %></h1>
   <%#= render 'admin/filter/filters_form' %>
 </div>
-<div class="flex flex-col">
-  <div class="overflow-x-auto shadow-md sm:rounded-lg">
-    <div class="inline-block min-w-full align-middle">
-      <div class="overflow-hidden ">
-        <%= turbo_frame_tag frame_name(model, parent), target: "_top" do %>
+<%= turbo_frame_tag frame_name(model, parent), target: "_top" do %>
+  <div class="flex flex-col">
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
+      <div class="inline-block min-w-full align-middle">
+        <div class="overflow-hidden ">
           <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
             <thead class="bg-gray-100 dark:bg-gray-700">
               <tr>
@@ -45,33 +45,33 @@ List options:
               <% end %>
             </tbody>
           </table>
-        <% end %>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="py-12 flex justify-center items-end">
-  <div class="justify-self-start inline-flex">
-    <%= form_with url: admin_index_path, method: :get do |f| %>
-      <% query_params.each_key do |qp| %>
-        <% if query_params[qp].present? %>
-          <% next if qp == :per %>
-          <% val = query_params[qp] %>
-          <% p 'qp====', qp %>
-          <%= f.hidden_field qp, value: val.to_json  %>
+  <div class="py-12 flex justify-center items-end">
+    <%= paginate objects, remote: true, model:, parent: %>
+    <div class="justify-self-start inline-flex">
+      <%= form_with url: admin_search_path(model, parent), data:{turbo_frame: frame_name(model, parent)} do |f| %>
+        <% query_params.each_key do |qp| %>
+          <% if query_params[qp].present? %>
+            <% next if qp == :per %>
+            <% val = query_params[qp] %>
+            <% p 'qp====', qp %>
+            <%= f.hidden_field qp, value: val.to_json  %>
+          <% end %>
         <% end %>
+        <%= f.label :per, 'Per page', class: "block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
+        <%= f.number_field :per, value: "#{objects.limit_value}", class: "block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
       <% end %>
-      <%= f.label :per, 'Per page', class: "block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
-      <%= f.number_field :per, value: "#{query_params[:per] || 25}", class: "block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
-    <% end %>
+    </div>
   </div>
-  <%= paginate objects, remote: true %>
-</div>
-<p> <%= query_params %> </p>
-<%= search_form_for q, url: admin_search_path(model, parent), html: { method: :post }, data:{turbo_frame: frame_name(model, parent) } do |f|%>
-  <% model.filter_methods.each do |method| %>
-    <%= f.label :"#{method}_cont" %>
-    <%= f.search_field :"#{method}_cont" %>
+  <p> <%= query_params %> </p>
+  <%= search_form_for q, url: admin_search_path(model, parent), html: { method: :post }, data:{turbo_frame: frame_name(model, parent) } do |f|%>
+    <% model.filter_methods.each do |method| %>
+      <%= f.label :"#{method}_cont" %>
+      <%= f.search_field :"#{method}_cont" %>
+    <% end %>
+    <%= f.submit %>
   <% end %>
-  <%= f.submit %>
 <% end %>
