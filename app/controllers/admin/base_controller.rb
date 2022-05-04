@@ -10,10 +10,10 @@ class Admin::BaseController < ApplicationController
     # change model to base (on _list bartial and all the helpers)
     # find a way to set base not from controller name
 
-    base = @parent.present? ? @parent.public_send(@model.model_name.plural) : @model
+    base = @parent.present? ? @parent.public_send(@model.to_table_sym) : @model
     @q = base.ransack(params[:q])
     @queries = %i[result index_set]
-    sort_objects # if params[:order].present? && params[:sort_by].present?
+    # sort_objects # if params[:order].present? && params[:sort_by].present?
     paginate_objects
     # ransack_objects
     p "===========@queries", @queries
@@ -89,7 +89,7 @@ class Admin::BaseController < ApplicationController
 
   def set_model
     # 'users' => User
-    @model = params[:model] || controller_name.classify.constantize
+    @model = params[:model]&.s_to_model || controller_name.s_to_model
   end
 
   def set_object
@@ -99,8 +99,8 @@ class Admin::BaseController < ApplicationController
   end
 
   def set_parent
-    parent_model = params[:parent_model]
-    parent_id = params["#{parent_model.model_name.singular}_id"]
+    parent_model = params[:parent_model].s_to_model
+    parent_id = params[params[:parent_model].foreign_key]
     @parent = parent_model.find(parent_id)
   end
 
@@ -113,7 +113,7 @@ class Admin::BaseController < ApplicationController
     @object.show_lists.each do |list|
       instance_variable_set(:"@#{list}", @object.public_send(list).page(1))
       instance_variable_set(:"@#{list}_q", instance_variable_get(:"@#{list}").ransack({}))
-      instance_variable_set(:"@#{list}_model", list.to_s.singularize.capitalize.constantize)
+      instance_variable_set(:"@#{list}_model", list.s_to_model)
     end
   end
 

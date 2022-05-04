@@ -3,7 +3,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   # defines the models that have admin index routes
   def self.admin_resources
-    [User, Product, Order]
+    [:users, :products, :orders]
   end
 
   # the methods that are called to display the instance
@@ -44,4 +44,28 @@ class ApplicationRecord < ActiveRecord::Base
   def self.index_set
     all
   end
+
+  # Convert to strings and symbols
+
+  def self.to_table_s
+    model_name.plural
+  end
+
+  def self.to_element_s
+    model_name.element
+  end
+
+  def self.to_foreign_key
+    to_element_s.foreign_key
+  end
+
+  def self.to_table_sym
+    to_table_s.to_sym
+  end
+
+  def self.to_element_sym
+    to_element_s.to_sym
+  end
+
+
 end

@@ -11,19 +11,19 @@ Rails.application.routes.draw do
 
   namespace :admin do
     ApplicationRecord.admin_resources.each do |admin_resource|
-      resources admin_resource.model_name.route_key do
-        admin_resource.show_lists.each do |list|
+      resources admin_resource do
+        admin_resource.s_to_model.show_lists.each do |list|
           resources list, only: %i[] do
             collection do
-              match 'search' => "#{admin_resource.model_name.plural}#search",
+              match 'search' => "#{admin_resource}#search",
                 via: %i[get post],
                 as: :search,
-                defaults: { parent_model: admin_resource, model: list.to_s.singularize.capitalize.constantize }
+                defaults: { parent_model: admin_resource.classify, model: list.classify }
             end
           end
         end
         collection do
-          match 'search' => "#{admin_resource.model_name.plural}#search", via: %i[get post], as: :search
+          match 'search' => "#{admin_resource}#search", via: %i[get post], as: :search
         end
       end
     end

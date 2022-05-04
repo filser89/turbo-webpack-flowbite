@@ -53,7 +53,7 @@ module Admin::BaseHelper
     assoc.send(display_method)
   end
 
-  # :user => User
+  # :user => 'User'
   def column_header(method)
     method.to_s.humanize
   end
@@ -120,14 +120,17 @@ module Admin::BaseHelper
   end
 
   def frame_name(model, parent = nil)
-    return "search-#{model.model_name.plural}" unless parent.present?
+    return "search-#{model.to_table_s}" unless parent.present?
 
-    "search-#{parent.model_name.singular}-#{model.model_name.plural}"
+    "search-#{parent.class.to_element_s}-#{model.to_table_s}"
   end
 
-  def filter_action(model, parent = nil)
-    return public_send("search_admin_#{model.model_name.plural}_path") unless parent.present?
-
-    public_send("search_admin_#{parent.model_name.singular}_#{model.model_name.plural}_path", parent.id)
+  def admin_search_path(model, parent = nil, options = {})
+    # prepare the url for the link
+    args = ["search_admin_#{model.to_table_s}_path"] unless parent.present?
+    args = ["search_admin_#{parent.class.to_element_s}_#{model.to_table_s}_path", parent.id] if parent.present?
+    # add query parameters
+    args << options[:pars] if options[:pars].present?
+    public_send(*args)
   end
 end

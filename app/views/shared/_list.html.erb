@@ -6,6 +6,7 @@ List options:
   q - result of ransack
   query_params
  -->
+<%#= raise %>
 <div class="flex justify-between">
   <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"><%= table_header(model) %></h1>
   <%#= render 'admin/filter/filters_form' %>
@@ -22,10 +23,11 @@ List options:
                   <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                     <%= column_header(method) %>
                     <% if is_attribute?(model, method) %>
-                      <%= link_to admin_index_path(pars: merged_params({sort_params: {sort_by: method, order: :desc}})) do %>
+                      <%# button to is used for post request to merge params with search_form  %>
+                      <%= button_to(admin_search_path(model, parent), params: {q: {s: ["#{method} desc"]}}, data:{turbo_frame: frame_name(model, parent) })  do %>
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                       <% end %>
-                      <%= link_to admin_index_path(pars: merged_params({sort_params: {sort_by: method, order: :asc}})) do %>
+                      <%= button_to(admin_search_path(model, parent), params: {q: {s: ["#{method} asc"]}}, data:{turbo_frame: frame_name(model, parent) })  do %>
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7l4-4m0 0l4 4m-4-4v18"></path></svg>
                       <% end %>
                     <% end %>
@@ -66,7 +68,7 @@ List options:
   <%= paginate objects, remote: true %>
 </div>
 <p> <%= query_params %> </p>
-<%= search_form_for q, url: filter_action(model, parent), html: { method: :post }, data:{turbo_frame: frame_name(model, parent) } do |f|%>
+<%= search_form_for q, url: admin_search_path(model, parent), html: { method: :post }, data:{turbo_frame: frame_name(model, parent) } do |f|%>
   <% model.filter_methods.each do |method| %>
     <%= f.label :"#{method}_cont" %>
     <%= f.search_field :"#{method}_cont" %>
