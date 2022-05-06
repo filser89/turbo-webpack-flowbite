@@ -21,7 +21,8 @@ module Admin::BaseHelper
   # merges existing params for sorting/pagination/filters with new query params
   def merged_params(query_params, new_params = {})
     # h = {resource_name: resource_name}.merge(new_params)
-    query_params.merge(new_params)
+    # query_params.merge(new_params)
+
   end
 
   # checks if the mrethod is an association
@@ -115,8 +116,8 @@ module Admin::BaseHelper
     end
   end
 
-  def index_td(model, object, method, options = {})
-    content_tag(:td, index_td_content(model, object, method), class: options[:class])
+  def index_td(model, object, method, options = {}, &block)
+    content_tag(:td, index_td_content(model, object, method), class: options[:class], &block)
   end
 
   def frame_name(model, parent = nil)

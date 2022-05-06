@@ -24,10 +24,10 @@ List options:
                     <%= column_header(method) %>
                     <% if is_attribute?(model, method) %>
                       <%# button to is used for post request to merge params with search_form  %>
-                      <%= button_to(admin_search_path(model, parent), params: {q: {s: ["#{method} desc"]}}, data:{turbo_frame: frame_name(model, parent) })  do %>
+                      <%= button_to(admin_search_path(model, parent), params: {q: query_params[:q].merge({s: ["#{method} desc"]}), per: query_params[:per] }, data:{turbo_frame: frame_name(model, parent) })  do %>
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                       <% end %>
-                      <%= button_to(admin_search_path(model, parent), params: {q: {s: ["#{method} asc"]}}, data:{turbo_frame: frame_name(model, parent) })  do %>
+                      <%= button_to(admin_search_path(model, parent), params: {q: query_params[:q].merge({s: ["#{method} asc"]}), per: query_params[:per]}, data:{turbo_frame: frame_name(model, parent) })  do %>
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7l4-4m0 0l4 4m-4-4v18"></path></svg>
                       <% end %>
                     <% end %>
@@ -50,7 +50,7 @@ List options:
     </div>
   </div>
   <div class="py-12 flex justify-center items-end">
-    <%= paginate objects, remote: true, model:, parent: %>
+    <%= paginate objects, remote: true, model:, parent:, query_params: %>
     <div class="justify-self-start inline-flex">
       <%= form_with url: admin_search_path(model, parent), data:{turbo_frame: frame_name(model, parent)} do |f| %>
         <% query_params.each_key do |qp| %>
@@ -58,7 +58,8 @@ List options:
             <% next if qp == :per %>
             <% val = query_params[qp] %>
             <% p 'qp====', qp %>
-            <%= f.hidden_field qp, value: val.to_json  %>
+            <%#= f.hidden_field qp, value: val.to_json  %>
+            <%= raw hash_as_hidden_fields(query_params) %>
           <% end %>
         <% end %>
         <%= f.label :per, 'Per page', class: "block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
@@ -67,7 +68,9 @@ List options:
     </div>
   </div>
   <p> <%= query_params %> </p>
+  <p> <%#= merged_params %> </p>
   <%= search_form_for q, url: admin_search_path(model, parent), html: { method: :post }, data:{turbo_frame: frame_name(model, parent) } do |f|%>
+    <%= raw hash_as_hidden_fields(query_params) %>
     <% model.filter_methods.each do |method| %>
       <%= f.label :"#{method}_cont" %>
       <%= f.search_field :"#{method}_cont" %>

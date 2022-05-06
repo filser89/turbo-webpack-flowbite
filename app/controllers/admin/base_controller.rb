@@ -71,9 +71,13 @@ class Admin::BaseController < ApplicationController
 
   def set_query_params
     @query_params = {
-      sort_params: @sort_params,
-      per: params[:per]
+      per: params[:per],
+      q: {}
     }
+    @query_params[:q] = params[:q].to_unsafe_h if params[:q].present?
+    # @query_params[:s] = params[:q][:s] if params[:q].present? && params[:q][:s].present?
+    # @query_params[:filters] =  params[:q].except(:s).to_unsafe_h if params[:q].present?
+    # p '=====================FILTERS', @query_params[:filters].merge({name_cont: "cat"})
   end
 
   def sort_objects
