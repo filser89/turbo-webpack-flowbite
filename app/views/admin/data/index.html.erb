@@ -41,21 +41,21 @@
 <div class="py-12 flex justify-center items-end">
   <div class="justify-self-start inline-flex">
     <%= form_with url: admin_data_index_path(merged_params), method: :get do |f| %>
-      <% @query_params.each_key do |qp| %>
-        <% if @query_params[qp].present? %>
+      <% @legacy_params.each_key do |qp| %>
+        <% if @legacy_params[qp].present? %>
           <% next if qp == :per %>
-          <% val = @query_params[qp] %>
+          <% val = @legacy_params[qp] %>
           <% p 'qp====', qp %>
           <%= f.hidden_field qp, value: val.to_json  %>
         <% end %>
       <% end %>
       <%= f.label :per, 'Per page', class: "block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
-      <%= f.number_field :per, value: "#{@query_params[:per] || 25}", class: "block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
+      <%= f.number_field :per, value: "#{@legacy_params[:per] || 25}", class: "block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
     <% end %>
   </div>
   <%= paginate @objects, remote: true %>
 </div>
-<p> <%= @query_params %> </p>
+<p> <%= @legacy_params %> </p>
 <%#= search_form_for @q do%>
   <%# @model.filter_methods.each do |method| %>
     <%#= f.label :"#{method}_cont" %>

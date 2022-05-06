@@ -10,8 +10,8 @@ module Admin::DataHelper
 
   # # # creates hidden inputs for the form to keep all the query params
   # # def hidden_query_inputs(f)
-  # #   @query_params.each_key do |qp|
-  # #     if @query_params[qp].present?
+  # #   @legacy_params.each_key do |qp|
+  # #     if @legacy_params[qp].present?
   # #       next if qp == :per
   # #       f.hidden_field qp
   # #     end
@@ -21,7 +21,7 @@ module Admin::DataHelper
   # # merges existing params for sorting/pagination/filters with new query params
   # def merged_params(new_params = {})
   #   # h = {resource_name: resource_name}.merge(new_params)
-  #   @query_params.merge(new_params)
+  #   @legacy_params.merge(new_params)
   # end
 
   # # checks if the mrethod is an association

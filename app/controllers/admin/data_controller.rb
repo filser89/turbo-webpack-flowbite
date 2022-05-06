@@ -48,11 +48,11 @@ class Admin::DataController < ApplicationController
 
   def destructure_params
     @sort_params = set_sort_params if params[:sort_params].present?
-    set_query_params
+    set_legacy_params
   end
 
-  def set_query_params
-    @query_params = {
+  def set_legacy_params
+    @legacy_params = {
       sort_params: @sort_params,
       per: params[:per]
     }
