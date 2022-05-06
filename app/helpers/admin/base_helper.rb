@@ -19,10 +19,11 @@ module Admin::BaseHelper
   # end
 
   # merges existing params for sorting/pagination/filters with new query params
-  def merged_params(legacy_params, new_params = {})
-    # h = {resource_name: resource_name}.merge(new_params)
-    # legacy_params.merge(new_params)
 
+  def sort_params(method, order, legacy_params)
+    return { q: { s: ["#{method} #{order}"] }, per: legacy_params[:per] } unless legacy_params[:q].present?
+
+    { q: legacy_params[:q]&.merge({ s: ["#{method} #{order}"] }), per: legacy_params[:per] }
   end
 
   # checks if the mrethod is an association

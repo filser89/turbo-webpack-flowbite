@@ -2,29 +2,18 @@ class Admin::BaseController < ApplicationController
   before_action :set_model, only: %i[index search show create update destroy]
   before_action :set_parent, only: %i[index search], if: :parent?
   before_action :set_object, only: %i[show update destroy]
-  before_action :set_lists_variables, only: %i[show]
-  before_action :destructure_params, only: %i[index search]
+  before_action :set_lists_list_options, only: %i[show]
+  before_action :set_legacy_params, only: %i[index search]
   rescue_from ActionController::MissingExactTemplate, with: :standard_view
 
   def index
-    # change model to base (on _list bartial and all the helpers)
-    # find a way to set base not from controller name
-
     base = @parent.present? ? @parent.public_send(@model.to_table_sym) : @model
     @q = base.ransack(params[:q])
     @queries = %i[result index_set]
-    # sort_objects # if params[:order].present? && params[:sort_by].present?
     paginate_objects
-    # ransack_objects
     p "===========@queries", @queries
     p @objects = @queries.inject(@q) { |o, a| o.send(*a) }
-    @list_options = {
-      model: @model,
-      objects: @objects,
-      parent: @parent,
-      q: @q,
-      legacy_params: @legacy_params
-    }
+    set_list_options
   end
 
   def show; end
@@ -42,31 +31,14 @@ class Admin::BaseController < ApplicationController
 
   private
 
-  # def ransack_objects
-  #   @queries << :ransack
-  # end
-
-  # converts json to a hash if possible or returns a value
-  def parse_json_if_can(val)
-    return val unless val.is_a? String
-
-    JSON.parse(val)
-  rescue JSON::ParserError => _e
-    val
-  end
-
-  def set_sort_params
-    sp = parse_json_if_can(params[:sort_params])
-    p 'sp================', sp
-    pars = {}
-    sp.each_key { |k| pars[k.to_sym] = sp[k] }
-    p '===================pars', pars
-    pars
-  end
-
-  def destructure_params
-    @sort_params = set_sort_params if params[:sort_params].present?
-    set_legacy_params
+  def set_list_options
+    @list_options = {
+      model: @model,
+      objects: @objects,
+      parent: @parent,
+      q: @q,
+      legacy_params: @legacy_params
+    }
   end
 
   def set_legacy_params
@@ -75,15 +47,6 @@ class Admin::BaseController < ApplicationController
       q: {}
     }
     @legacy_params[:q] = params[:q].to_unsafe_h if params[:q].present?
-    # @legacy_params[:s] = params[:q][:s] if params[:q].present? && params[:q][:s].present?
-    # @legacy_params[:filters] =  params[:q].except(:s).to_unsafe_h if params[:q].present?
-    # p '=====================FILTERS', @legacy_params[:filters].merge({name_cont: "cat"})
-  end
-
-  def sort_objects
-    return unless @sort_params.present?
-
-    @queries << [:order, { @sort_params[:sort_by] => @sort_params[:order] }]
   end
 
   def paginate_objects
@@ -113,11 +76,17 @@ class Admin::BaseController < ApplicationController
   end
 
   # creates instance_variables in order to render show lists of a @object
-  def set_lists_variables
+  def set_lists_list_options
     @object.show_lists.each do |list|
-      instance_variable_set(:"@#{list}", @object.public_send(list).page(1))
-      instance_variable_set(:"@#{list}_q", instance_variable_get(:"@#{list}").ransack({}))
-      instance_variable_set(:"@#{list}_model", list.s_to_model)
+      objects = @object.public_send(list).page(1)
+      list_options = {
+        model: list.s_to_model,
+        objects:,
+        parent: @object,
+        q: objects.ransack({}),
+        legacy_params: {}
+      }
+      instance_variable_set(:"@#{list}_list_options", list_options)
     end
   end
 
