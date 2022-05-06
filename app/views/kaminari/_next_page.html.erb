@@ -9,6 +9,6 @@
 <% next_page = current_page + 1 %>
 <li class="next">
   <% unless current_page.last? %>
-    <%= button_to t('views.pagination.next').html_safe, admin_search_path(model, parent), {params:{page: next_page, per: per_page}.merge(query_params), data:{turbo_frame: frame_name(model, parent)}, rel: 'next', remote: remote, class: 'py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white' } %>
+    <%= button_to t('views.pagination.next').html_safe, admin_search_path(model, parent), {params:{page: next_page, per: per_page}.merge(legacy_params), data:{turbo_frame: frame_name(model, parent)}, rel: 'next', remote: remote, class: 'py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white' } %>
   <% end %>
 </li>

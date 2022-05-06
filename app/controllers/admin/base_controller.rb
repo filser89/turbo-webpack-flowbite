@@ -23,7 +23,7 @@ class Admin::BaseController < ApplicationController
       objects: @objects,
       parent: @parent,
       q: @q,
-      query_params: @query_params
+      legacy_params: @legacy_params
     }
   end
 
@@ -66,18 +66,18 @@ class Admin::BaseController < ApplicationController
 
   def destructure_params
     @sort_params = set_sort_params if params[:sort_params].present?
-    set_query_params
+    set_legacy_params
   end
 
-  def set_query_params
-    @query_params = {
+  def set_legacy_params
+    @legacy_params = {
       per: params[:per],
       q: {}
     }
-    @query_params[:q] = params[:q].to_unsafe_h if params[:q].present?
-    # @query_params[:s] = params[:q][:s] if params[:q].present? && params[:q][:s].present?
-    # @query_params[:filters] =  params[:q].except(:s).to_unsafe_h if params[:q].present?
-    # p '=====================FILTERS', @query_params[:filters].merge({name_cont: "cat"})
+    @legacy_params[:q] = params[:q].to_unsafe_h if params[:q].present?
+    # @legacy_params[:s] = params[:q][:s] if params[:q].present? && params[:q][:s].present?
+    # @legacy_params[:filters] =  params[:q].except(:s).to_unsafe_h if params[:q].present?
+    # p '=====================FILTERS', @legacy_params[:filters].merge({name_cont: "cat"})
   end
 
   def sort_objects
