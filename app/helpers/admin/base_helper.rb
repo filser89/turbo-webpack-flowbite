@@ -1,25 +1,7 @@
 # frozen_string_literal: true
 
 module Admin::BaseHelper
-
-  # def build_value_from_hash(hash)
-  #   val = ''
-  #   hash.each_key { |k| val += "[#{k}][#{hash[k]}]"}
-  #   val
-  # end
-
-  # # creates hidden inputs for the form to keep all the query params
-  # def hidden_query_inputs(f)
-  #   @legacy_params.each_key do |qp|
-  #     if @legacy_params[qp].present?
-  #       next if qp == :per
-  #       f.hidden_field qp
-  #     end
-  #   end
-  # end
-
-  # merges existing params for sorting/pagination/filters with new query params
-
+  # merges existing params forpagination/filters with new sort params
   def sort_params(method, order, legacy_params)
     return { q: { s: ["#{method} #{order}"] }, per: legacy_params[:per] } unless legacy_params[:q].present?
 
