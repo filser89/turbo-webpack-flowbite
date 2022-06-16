@@ -55,12 +55,12 @@ module Admin::BaseHelper
   # check_boxes - A list of check boxes users can turn on and off to filter
   # returns a nested array [option1, option2, option3] where each option is an array option1 = [value1, text1]
   def filter_options(method)
-    raise_not_an_attribute_error(method) unless is_attribute?(method)
+    # raise_not_an_attribute_error(method) unless is_attribute?(method)
 
     data_types = {
-      string: [['Contains', ''], ['Equals', ''], ['Starts with', ''], ['Ends with', '']],
-      integer: [['Equal To', ''], ['Greater Than', ''], ['Less Than', '']],
-      float: [['Equal To', ''], ['Greater Than', ''], ['Less Than', '']]
+      string: :i_cont,
+      integer: ,
+      float:
     }
 
     data_types[data_type(method)]
@@ -78,11 +78,6 @@ module Admin::BaseHelper
       enum: 'enum'
     }
     data_types[type]
-  end
-
-  # returns a data type that a method returns
-  def data_type(method)
-    @model.type_for_attribute(method).type
   end
 
   def raise_not_an_attribute_error

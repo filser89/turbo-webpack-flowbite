@@ -18,4 +18,8 @@ class Product < ApplicationRecord
   def caps_name
     name.upcase
   end
+
+  ransacker :reversed_name, type: :string, formatter: proc { |v| v.reverse } do |parent|
+    parent.table[:name]
+  end
 end

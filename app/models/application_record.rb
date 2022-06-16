@@ -67,5 +67,16 @@ class ApplicationRecord < ActiveRecord::Base
     to_element_s.to_sym
   end
 
+  # returns a data type that a method returns
+  def self.data_type_of(method)
+    type_for_attribute(method).type
+  end
+
+  # def self.
+
+  #     end
+
+
+
 
 end
