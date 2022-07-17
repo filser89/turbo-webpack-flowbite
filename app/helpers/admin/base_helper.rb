@@ -33,7 +33,7 @@ module Admin::BaseHelper
   def assoc_display(object, method)
     assoc = object.send(strip_id(method))
     display_methods = %i[full_name name last_name title email]
-    display_method = display_methods.find {|m| assoc.respond_to?(m)} || :id
+    display_method = display_methods.find { |m| assoc.respond_to?(m) } || :id
     assoc.send(display_method)
   end
 
@@ -95,21 +95,37 @@ module Admin::BaseHelper
   end
 
   def index_td(model, object, method, options = {}, &block)
-    content_tag(:td, index_td_content(model, object, method), class: options[:class], &block)
+    content_tag(:td, index_td_content(model, object, method), class: options[:class], data: { role: method.to_s }, &block)
   end
 
   def frame_name(model, parent = nil)
-    return "search-#{model.to_table_s}" unless parent.present?
+    return "search-#{model_part(model)}" unless parent.present?
 
-    "search-#{parent.class.to_element_s}-#{model.to_table_s}"
+    "search-#{parent_part(parent)}-#{model_part(model)}"
   end
 
   def admin_search_path(model, parent = nil, options = {})
     # prepare the url for the link
-    args = ["search_admin_#{model.to_table_s}_path"] unless parent.present?
-    args = ["search_admin_#{parent.class.to_element_s}_#{model.to_table_s}_path", parent.id] if parent.present?
+    args = ["search_admin_#{model_part(model)}_path"] unless parent.present?
+    args = ["search_admin_#{parent_part(parent)}_#{model_part(model)}_path", parent.id] if parent.present?
     # add query parameters
     args << options[:pars] if options[:pars].present?
     public_send(*args)
+  end
+
+  def table_id(model, parent = nil)
+    return "#{model_part(model)}-table" unless parent.present?
+
+    "#{parent_part(parent)}-#{model_part(model)}-table"
+  end
+
+  private
+
+  def parent_part(parent)
+    parent.class.to_element_s
+  end
+
+  def model_part(model)
+    model.to_table_s
   end
 end
