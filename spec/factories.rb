@@ -1,4 +1,12 @@
 FactoryBot.define do
+  factory :table_builder do
+    
+  end
+
+  factory :list_column do
+    
+  end
+
 
   factory :user do
     sequence(:email) { |n| "email#{n}@email.com" }

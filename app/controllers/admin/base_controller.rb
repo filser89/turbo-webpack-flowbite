@@ -13,6 +13,7 @@ class Admin::BaseController < ApplicationController
     paginate_objects
     p "===========@queries", @queries
     p @objects = @queries.inject(@q) { |o, a| o.send(*a) }
+    @table_builder = TableBuilder.new(@objects, @model)
     set_list_options
   end
 
@@ -37,7 +38,8 @@ class Admin::BaseController < ApplicationController
       objects: @objects,
       parent: @parent,
       q: @q,
-      legacy_params: @legacy_params
+      legacy_params: @legacy_params,
+      table_builder: @table_builder
     }
   end
 

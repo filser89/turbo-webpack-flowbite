@@ -72,11 +72,5 @@ class ApplicationRecord < ActiveRecord::Base
     type_for_attribute(method).type
   end
 
-  # def self.
-
-  #     end
-
-
-
 
 end
