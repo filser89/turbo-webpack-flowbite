@@ -3,9 +3,8 @@ require 'action_view'
 class TableBuilder
   include ActionView::Helpers::TagHelper
 
-  def initialize(relation, model)
+  def initialize(relation)
     @relation = relation
-    @model = model
   end
 
   def list_rows
@@ -18,6 +17,23 @@ class TableBuilder
 
   def tbody
     content_tag(:tbody, trs)
+  end
+
+  def headers
+    list_rows&.first&.map(&:header)
+  end
+
+  # def ths
+  #   safe_join(header_content.map { |header| content_tag(:th, header) })
+  # end
+
+  def header_tr
+
+    content_tag(:tr, ths)
+  end
+
+  def thead
+    content_tag(:thead, header_tr)
   end
 
   private

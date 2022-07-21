@@ -1,6 +1,6 @@
 class Product < ApplicationRecord
   include Admin::AdminResource
-  # extend Admin::AdminResource
+
 
   has_many :orders
   has_many :users, through: :orders

@@ -18,12 +18,12 @@ List options:
           <table id="<%= table_id(model, parent) %>" class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
             <thead class="bg-gray-100 dark:bg-gray-700">
               <tr>
-                <% model.index_methods.each do |method| %>
+                <% model.list_headers.each do |header| %>
                   <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                    <%= column_header(method) %>
-                    <% if is_attribute?(model, method) %>
-                      <%= render 'admin/list_parts/sort_button', model:, parent:, method:, legacy_params:, order: :desc  %>
-                      <%= render 'admin/list_parts/sort_button', model:, parent:, method:, legacy_params:, order: :asc  %>
+                    <%= header.content %>
+                    <% if header.sortable? %>
+                      <%= render 'admin/list_parts/sort_button', model:, parent:, method: header.method, legacy_params:, order: :desc  %>
+                      <%= render 'admin/list_parts/sort_button', model:, parent:, method: header.method, legacy_params:, order: :asc  %>
                     <% end %>
                   </th>
                 <% end %>

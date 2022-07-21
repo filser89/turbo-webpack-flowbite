@@ -1,4 +1,6 @@
 class Order < ApplicationRecord
+  include Admin::AdminResource
+
   STATUSES_ORDER = %w[created confirmed delivered completed].freeze
 
   belongs_to :user

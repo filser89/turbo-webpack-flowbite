@@ -17,10 +17,20 @@ class ListColumn
     @method = method
     @model = options[:model] || object.class
     @options = options
+    # @sortable = options[:sortable] || true
   end
 
   def header
-    options[:header] || I18n.t("admin.#{model.to_element_s}.list_columns.#{method}.header") || method.to_s.humanize
+    options[:header] || method.to_s.humanize
+  end
+
+  def th
+    return content_tag(:th, header) unless sortable?
+
+    content_tag(:th) do
+      content_tag(:span, header)
+      render
+    end
   end
 
   def td
@@ -100,4 +110,8 @@ class ListColumn
   def iterable?
     value.is_a?(ActiveRecord::Relation) || value.is_a?(Array)
   end
+
+  # def sortable?
+  #   @sortable
+  # end
 end
