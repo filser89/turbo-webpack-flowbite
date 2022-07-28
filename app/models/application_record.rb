@@ -1,10 +1,18 @@
 class ApplicationRecord < ActiveRecord::Base
   primary_abstract_class
 
-  # defines the models that have admin index routes
-  def self.admin_resources
-    [:users, :products, :orders]
-  end
+  # def self.load_admin_resources
+  #   Dir[File.join(__dir__,'*.rb')].map { |file| file.match(%r{(?<=/app/models/).*(?=.rb)}).to_s.classify.constantize }
+  # end
+
+  # # defines the models that have admin index routes
+  # def self.admin_resources
+  #   descendants.map(&:admin_resources).flatten
+  # end
+
+  # def self.admin_resource(admin_resource_name)
+  #   admin_resources.find { |admin_resource| admin_resource.name == admin_resource_name }
+  # end
 
   # the methods that are called to display the instance
   def display_methods

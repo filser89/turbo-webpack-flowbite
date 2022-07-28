@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include Admin::AdminResource
+  include Administratable
   # extend Admin::AdminResource
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -14,8 +14,22 @@ class User < ApplicationRecord
   # kaminari
   paginates_per 5
 
-  column :email, class: 'some-class another-class'
-  column :products, wrapper_class: 'td-class', class: 'link-class'
+  # column :email, class: 'some-class another-class'
+  # column :products, wrapper_class: 'td-class', class: 'link-class'
+
+  admin_resource do
+    list_columns do
+      list_column :email
+      list_column :encrypted_password
+    end
+    filters do
+      filter :email
+      filter :dog
+    end
+    show_lists do
+      show_list :products
+    end
+  end
 
   def self.index_methods
     %i[email]

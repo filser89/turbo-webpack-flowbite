@@ -1,5 +1,5 @@
 require 'action_view'
-
+require "erb"
 # options
 # class - html class of the td content or html class of each item of the content
 # td_class - for itterables - htmk class of a td tag
@@ -29,15 +29,24 @@ class ListColumn
 
     content_tag(:th) do
       content_tag(:span, header)
-      render
     end
   end
 
   def td
+    options[:td_partial].present? ? partial_td : default_td
+  end
+
+  def partial_td
+    content = File.read(File.expand_path("app/views/admin/partials/list/tds/_#{options[:td_partial]}.html.erb"))
+    erb = ERB.new(content).result(binding)
+    content_tag(:td, raw(erb), data:)
+  end
+
+  def default_td
     if iterable?
-      content_tag(:td, td_multiple_content, class: options[:td_class])
+      content_tag(:td, td_multiple_content, class: options[:td_class], data:)
     else
-      content_tag(:td, td_single_content, class: options[:td_class])
+      content_tag(:td, td_single_content, class: options[:td_class], data:)
     end
   end
 
@@ -111,7 +120,13 @@ class ListColumn
     value.is_a?(ActiveRecord::Relation) || value.is_a?(Array)
   end
 
-  # def sortable?
-  #   @sortable
-  # end
+  def data
+    return default_data if options[:data].blank?
+
+    default_data.merge(options[:data])
+  end
+
+  def default_data
+    { role: method.to_s }
+  end
 end

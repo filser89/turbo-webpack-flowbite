@@ -1,4 +1,11 @@
-example_id                                                 | status | run_time        |
----------------------------------------------------------- | ------ | --------------- |
-./spec/features/user_visits_orders_index_page_spec.rb[1:1] | passed | 0.34517 seconds |
-./spec/views/shared/_list.html.erb_spec.rb[1:1]            | passed | 0.25761 seconds |
+example_id                                                 | status  | run_time        |
+---------------------------------------------------------- | ------- | --------------- |
+./spec/features/user_visits_orders_index_page_spec.rb[1:1] | failed  | 0.27665 seconds |
+./spec/models/admin_builder_spec.rb[1:1]                   | pending | 0.00002 seconds |
+./spec/models/admin_resource_spec.rb[1:1]                  | pending | 0.00001 seconds |
+./spec/models/list_builder_spec.rb[1:1]                    | pending | 0.00001 seconds |
+./spec/models/list_column_spec.rb[1:1]                     | pending | 0.00001 seconds |
+./spec/models/list_filter_spec.rb[1:1]                     | pending | 0.00001 seconds |
+./spec/models/show_builder_spec.rb[1:1]                    | pending | 0.00001 seconds |
+./spec/models/table_builder_spec.rb[1:1]                   | pending | 0.00002 seconds |
+./spec/views/shared/_list.html.erb_spec.rb[1:1]            | failed  | 0.08591 seconds |

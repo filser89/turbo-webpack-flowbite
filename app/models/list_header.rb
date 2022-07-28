@@ -1,4 +1,5 @@
 class ListHeader
+  # do we need model here?
   def initialize(model, method, options = {})
     @model = model
     @method = method

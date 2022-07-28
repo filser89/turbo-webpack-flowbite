@@ -3,7 +3,8 @@ class Admin::BaseController < ApplicationController
   before_action :set_parent, only: %i[index search], if: :parent?
   before_action :set_object, only: %i[show update destroy]
   before_action :set_legacy_params, only: %i[index search]
-  before_action :set_lists_list_options, only: %i[show]
+  # before_action :set_lists_list_options, only: %i[show]
+  before_action :set_show_builder, only: %i[show]
   rescue_from ActionController::MissingExactTemplate, with: :standard_view
 
   def index
@@ -13,8 +14,8 @@ class Admin::BaseController < ApplicationController
     paginate_objects
     p "===========@queries", @queries
     p @objects = @queries.inject(@q) { |o, a| o.send(*a) }
-    @table_builder = TableBuilder.new(@objects)
     set_list_options
+    @list_builder = ListBuilder.new(@model.to_table_sym, @list_options)
   end
 
   def show; end
@@ -34,12 +35,11 @@ class Admin::BaseController < ApplicationController
 
   def set_list_options
     @list_options = {
-      model: @model,
       objects: @objects,
       parent: @parent,
       q: @q,
       legacy_params: @legacy_params,
-      table_builder: @table_builder
+      model: @model
     }
   end
 
@@ -77,6 +77,10 @@ class Admin::BaseController < ApplicationController
     params[:parent_model].present?
   end
 
+  def set_show_builder
+    @show_builder = ShowBuilder.new(@model.to_table_sym, @object)
+  end
+
   # creates instance_variables i.e @products_list_options in order to render show lists of @object
   def set_lists_list_options
     @object.show_lists.each do |list|
@@ -87,7 +91,7 @@ class Admin::BaseController < ApplicationController
         parent: @object,
         q: objects.ransack({}),
         legacy_params: {},
-        table_builder: TableBuilder.new(objects)
+        # table_builder: TableBuilder.new(objects)
       }
       instance_variable_set(:"@#{list}_list_options", list_options)
     end

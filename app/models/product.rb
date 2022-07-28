@@ -1,5 +1,5 @@
 class Product < ApplicationRecord
-  include Admin::AdminResource
+  include Administratable
 
 
   has_many :orders
@@ -15,9 +15,34 @@ class Product < ApplicationRecord
     # {method: :name, style_type: :main, sort: :name_alph, class: 'some class' }
   end
 
-  column :name
-  column :description
+  # column :name, data: { dog: 'dogggo' }
+  # column :description, class: "tab-grey"
+  # column :name, td_partial: 'name_with_description'
 
+  admin_resource do
+    list_columns do
+      list_column :name, data: { dog: 'dogggo' }
+      list_column :description, class: "tab-grey"
+      list_column :name, td_partial: 'name_with_description'
+      list_column :users
+    end
+    filters do
+      filter :name
+      filter :description
+      # filter :orders_count
+    end
+
+    show_lists do
+      show_list :orders
+      show_list :users
+    end
+  end
+
+  admin_resource :cups do
+    list_columns do
+      list_column :description
+    end
+  end
 
   def self.filter_methods
     %i[name quantity updated_at]

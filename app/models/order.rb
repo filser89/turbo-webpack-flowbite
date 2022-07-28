@@ -1,5 +1,5 @@
 class Order < ApplicationRecord
-  include Admin::AdminResource
+  include Administratable
 
   STATUSES_ORDER = %w[created confirmed delivered completed].freeze
 
@@ -16,6 +16,13 @@ class Order < ApplicationRecord
   scope :newest_first, -> { order(created_at: :desc) }
   scope :index_set, -> { newest_first }
 
+  admin_resource do
+    list_columns do
+      list_column :product
+      list_column :user
+      list_column :status
+    end
+  end
 
   def self.filter_methods
     # take array of 2 erlements: symbol and options. And all specific stuff is taken from options

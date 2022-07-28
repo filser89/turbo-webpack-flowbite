@@ -1,4 +1,24 @@
 FactoryBot.define do
+  factory :list_filter do
+    
+  end
+
+  factory :show_builder do
+    
+  end
+
+  factory :admin_builder do
+    
+  end
+
+  factory :list_builder do
+    
+  end
+
+  factory :admin_resource do
+    
+  end
+
   factory :table_builder do
     
   end
