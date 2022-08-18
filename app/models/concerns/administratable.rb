@@ -1,6 +1,6 @@
 module Administratable
   extend ActiveSupport::Concern
-
+  DISPLAY_METHODS = %i[full_name name title last_name first_name email id].freeze
   module ClassMethods
 
     def list_columns
@@ -12,13 +12,13 @@ module Administratable
       template[:list_column_templates] << [method, options]
     end
 
-    def filters
-      template[:filter_templates] = []
+    def list_filters
+      template[:list_filter_templates] = []
       yield
     end
 
-    def filter(filter, options = {})
-      template[:filter_templates] << [filter, options]
+    def list_filter(list_filter, options = {})
+      template[:list_filter_templates] << [list_filter, options]
     end
 
     def show_lists
@@ -35,7 +35,7 @@ module Administratable
     end
 
     def admin_resource(name = nil)
-      # @template = { list_column_templates: [], filter_templates: [], show_list_templates: [] }
+      # @template = { list_column_templates: [], list_filter_templates: [], show_list_templates: [] }
       name = table_name.to_sym if name.blank?
       assign_template(name)
       yield
@@ -58,11 +58,19 @@ module Administratable
     def clear_template
       remove_instance_variable(:@template)
     end
+
+    def display_method
+      new.display_method
+    end
   end
 
   module InstanceMethods
-    def list_column(method, options)
+    def list_column(method, options = {})
       ListColumn.new(self, method, options)
+    end
+
+    def display_method
+      DISPLAY_METHODS.find { |m| respond_to?(m) }
     end
   end
 
@@ -76,8 +84,8 @@ module Administratable
   end
 
   def self.included(receiver)
-    receiver.extend         ClassMethods
-    ActiveRecord::Relation.send(:include, (RelationMethods))
+    receiver.extend        ClassMethods
+    ActiveRecord::Relation.send(:include, RelationMethods)
     receiver.send :include, InstanceMethods
   end
 

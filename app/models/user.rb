@@ -22,9 +22,9 @@ class User < ApplicationRecord
       list_column :email
       list_column :encrypted_password
     end
-    filters do
-      filter :email
-      filter :dog
+    list_filters do
+      list_filter :email
+      list_filter :dog
     end
     show_lists do
       show_list :products

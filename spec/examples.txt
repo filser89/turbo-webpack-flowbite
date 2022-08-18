@@ -8,4 +8,4 @@ example_id                                                 | status  | run_time 
 ./spec/models/list_filter_spec.rb[1:1]                     | pending | 0.00001 seconds |
 ./spec/models/show_builder_spec.rb[1:1]                    | pending | 0.00001 seconds |
 ./spec/models/table_builder_spec.rb[1:1]                   | pending | 0.00002 seconds |
-./spec/views/shared/_list.html.erb_spec.rb[1:1]            | failed  | 0.08591 seconds |
+./spec/views/shared/_list.html.erb_spec.rb[1:1:1]          | failed  | 0.15774 seconds |

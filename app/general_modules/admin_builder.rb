@@ -1,6 +1,5 @@
 class AdminBuilder
-
-  def self.load_admin_resources
+  def self.require_models
     regex = %r{(?<=/app/models/).*(?=.rb)}
     Dir[File.join(Rails.root, 'app', 'models', '*.rb')].map { |file| file.match(regex).to_s.classify.constantize }
   end

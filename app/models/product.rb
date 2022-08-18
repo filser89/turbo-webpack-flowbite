@@ -8,6 +8,14 @@ class Product < ApplicationRecord
 
   validates :name, presence: true
   validates :quantity, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  # scope :sort_by_reverse_name_asc, -> { order("REVERSE(name) ASC") }
+  # scope :sort_by_reverse_name_desc, -> { order("REVERSE(name) DESC") }
+
+  scope :with_orders_count, -> { includes(:orders).group(:name).count(:orders) }
+
+  scope :order_status_percentage, -> {includes(:orders).count}
+
   # default_scope
   # admin index columns
   def self.index_methods
@@ -25,11 +33,11 @@ class Product < ApplicationRecord
       list_column :description, class: "tab-grey"
       list_column :name, td_partial: 'name_with_description'
       list_column :users
+      # list_column :orders_count
     end
-    filters do
-      filter :name
-      filter :description
-      # filter :orders_count
+    list_filters do
+      list_filter :name
+      list_filter :description, predicates: %w[cont end start]
     end
 
     show_lists do
@@ -56,9 +64,22 @@ class Product < ApplicationRecord
     name.upcase
   end
 
-  ransacker :reversed_name, type: :string, formatter: proc { |v| v.reverse } do |parent|
+  # def orders_count
+  #   orders.size
+  # end
+
+  ransacker :reversed_name, formatter: proc { |v| v.reverse } do |parent|
     parent.table[:name]
   end
+
+  ransacker :orders_count, type: :integer do
+    sql = "LEFT JOIN orders ON orders.product_id = products.id COUNT orders.id GROUP BY products.id"
+    Arel.sql(sql)
+  end
+
+  # ransacker :orders_count, type: :integer do
+  #   with
+  # end
 end
 
 

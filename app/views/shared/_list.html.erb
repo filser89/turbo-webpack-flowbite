@@ -6,53 +6,87 @@ List options:
   q - result of ransack
   legacy_params
  -->
-<%#list_builder = ListBuilder.new(controller_name, @list_options) %>
 <%#= raise %>
+<!-- Table header -->
 <div class="flex justify-between">
   <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"><%= list_builder.table_header %></h1>
 </div>
+<!-- Table header end -->
+<!-- Turbo frame that re-renders upon AJAX queries -->
 <%= turbo_frame_tag list_builder.frame_name, target: "_top" do %>
   <div class="flex flex-col">
     <div class="overflow-x-auto shadow-md sm:rounded-lg">
       <div class="inline-block min-w-full align-middle">
         <div class="overflow-hidden ">
           <table id="<%= list_builder.table_id %>" class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
+            <!-- Headers row -->
             <thead class="bg-gray-100 dark:bg-gray-700">
               <tr>
-                <% list_builder.list_headers.each do |header| %>
+                <% list_builder.list_headers.each do |list_header| %>
                   <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                    <%= header.content %>
-                    <% if header.sortable? %>
-                      <%= render 'admin/list_parts/sort_button', list_builder.sort_button_locals(header, :desc)  %>
-                      <%= render 'admin/list_parts/sort_button', list_builder.sort_button_locals(header, :asc)  %>
+                    <%= list_header.content %>
+                    <% if list_header.sortable? %>
+                      <%= render 'admin/list_parts/sort_button', list_header:, order: :desc %>
+                      <%= render 'admin/list_parts/sort_button', list_header:, order: :asc  %>
                     <% end %>
                   </th>
                 <% end %>
               </tr>
             </thead>
+            <!-- Headers row end-->
+            <!-- tbody (generated in list_builder) -->
             <%= list_builder.tbody %>
+            <!-- tbody (generated in list_builder) end-->
           </table>
         </div>
       </div>
     </div>
   </div>
   <div class="py-12 flex justify-center items-end">
-    <%= paginate list_builder.relation, remote: true, model: list_builder.model, parent: list_builder.parent, legacy_params: list_builder.legacy_params %>
+    <%= paginate list_builder.relation, list_paginator: list_builder.list_paginator %>
+    <!-- Per page form -->
     <div class="justify-self-start inline-flex">
-      <%= form_with url: list_builder.admin_search_path, data:{turbo_frame: list_builder.frame_name} do |f| %>
+      <%= form_with url: list_builder.admin_search_path, data:{turbo_frame: list_builder.frame_name, role: list_builder.per_page_role } do |f| %>
         <%= raw hash_as_hidden_fields(list_builder.legacy_params) %>
         <%= f.label :per, 'Per page', class: "block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" %>
         <%= f.number_field :per, value: "#{list_builder.relation.limit_value}", class: "block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"%>
       <% end %>
     </div>
+    <!-- Per page form end-->
   </div>
   <p> <%= list_builder.legacy_params %> </p>
-  <%#= search_form_for q, url: list_builder.admin_search_path, html: { method: :post }, data:{turbo_frame: list_builder.frame_name } do |f|%>
-    <%#= raw hash_as_hidden_fields(list_builder.legacy_params) %>
-    <%# model.filter_methods.each do |method| %>
-      <%#= f.label :"#{method}_cont" %>
-      <%#= f.search_field :"#{method}_cont" %>
-      <%# end %>
-      <%#= f.submit %>
-      <%# end %>
+  <!-- Filters form -->
+  <%= search_form_for list_builder.q, url: list_builder.admin_search_path, html: { method: :post }, data:{turbo_frame: list_builder.frame_name } do |f|%>
+    <%= raw hash_as_hidden_fields(list_builder.filter_form_params) %>
+    <% list_builder.list_filters.each do |list_filter| %>
+      <% if list_filter.assoc? %>
+        <%= f.label :"#{list_filter.method}" %>
+        <%= f.collection_select :"#{list_filter.method}_id_in", list_filter.collection, :id, list_filter.assoc_display_method, { include_blank: true }, multiple: true  %>
+        <%# list_filter.collection.each do |item| %>
+          <%#= f.label item.send(item.display_method) %>
+          <%#= f.check_box :"#{list_filter.method}_id_in",  { multiple: true }, item.id, nil %>
+          <%# end %>
+        <% elsif list_filter.enum? %>
+          <%= f.label :"#{list_filter.method}" %>
+          <%= f.select :"#{list_filter.method}_in", list_filter.collection, { include_blank: true }, multiple: true  %>
+          <%# list_filter.collection.each do |item| %>
+            <%#= f.label item %>
+            <%#= f.check_box :"#{list_filter.method}_in", { multiple: true }, item, nil %>
+            <%# end %>
+          <% elsif list_filter.date? %>
+            <%= f.label :"#{list_filter.method}_from" %>
+            <%= f.date_field :"#{list_filter.method}_gteq" %>
+            <%= f.label :"#{list_filter.method}_to" %>
+            <%= f.date_field :"#{list_filter.method}_lteq" %>
+          <% else %>
+            <% list_filter.predicates.each do |predicate| %>
+              <%= f.label :"#{list_filter.method}_#{predicate}" %>
+              <%= f.search_field :"#{list_filter.method}_#{predicate}" %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <%= f.submit %>
+      <% end %>
+      <!-- Filters form end -->
     <% end %>
+    <!-- Turbo frame that re-renders upon AJAX queries end -->

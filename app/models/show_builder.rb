@@ -1,25 +1,27 @@
 class ShowBuilder
   attr_reader :admin_resource, :object
 
-  def initialize(admin_resource_name, object)
-    @admin_resource = AdminBuilder.admin_resource(admin_resource_name.to_sym)
+  def initialize(admin_resource, object)
+    @admin_resource = admin_resource
     @object = object
   end
 
   def list_builders
-    admin_resource.show_list_names.map { |list_name| ListBuilder.new(list_name, standard_list_options(list_name)) }
+    admin_resource.show_list_names.map do |list_name|
+      ListBuilder.new(AdminBuilder.admin_resource(list_name), standard_list_options(list_name))
+    end
   end
 
-  def objects(show_list)
+  # def objects(show_list)
 
-  end
+  # end
 
   def standard_list_options(show_list_name)
-    objects = object.public_send(show_list_name).page(1)
+    relation = object.public_send(show_list_name).page(1)
     {
       parent: object,
-      objects:,
-      q: objects.ransack({}),
+      relation:,
+      q: relation.ransack({}),
       legacy_params: {}
     }
   end

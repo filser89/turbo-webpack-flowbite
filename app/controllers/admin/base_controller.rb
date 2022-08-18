@@ -15,7 +15,10 @@ class Admin::BaseController < ApplicationController
     p "===========@queries", @queries
     p @objects = @queries.inject(@q) { |o, a| o.send(*a) }
     set_list_options
-    @list_builder = ListBuilder.new(@model.to_table_sym, @list_options)
+    admin_resource = AdminBuilder.admin_resource(controller_name.to_sym)
+    p "=====================================================", admin_resource
+    p controller_name
+    @list_builder = ListBuilder.new(admin_resource, @list_options)
   end
 
   def show; end
@@ -35,7 +38,7 @@ class Admin::BaseController < ApplicationController
 
   def set_list_options
     @list_options = {
-      objects: @objects,
+      relation: @objects,
       parent: @parent,
       q: @q,
       legacy_params: @legacy_params,
@@ -48,6 +51,7 @@ class Admin::BaseController < ApplicationController
       per: params[:per],
       q: {}
     }
+    p '====================================='
     @legacy_params[:q] = params[:q].to_unsafe_h if params[:q].present?
   end
 
@@ -78,16 +82,17 @@ class Admin::BaseController < ApplicationController
   end
 
   def set_show_builder
-    @show_builder = ShowBuilder.new(@model.to_table_sym, @object)
+    admin_resource = AdminBuilder.admin_resource(controller_name.to_sym)
+    @show_builder = ShowBuilder.new(admin_resource, @object)
   end
 
   # creates instance_variables i.e @products_list_options in order to render show lists of @object
   def set_lists_list_options
     @object.show_lists.each do |list|
-      objects = @object.public_send(list).page(1)
+      relation = @object.public_send(list).page(1)
       list_options = {
         model: list.s_to_model,
-        objects:,
+        relation:,
         parent: @object,
         q: objects.ransack({}),
         legacy_params: {},

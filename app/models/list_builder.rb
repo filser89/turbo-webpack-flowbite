@@ -19,11 +19,11 @@ require 'action_view'
 class ListBuilder
   include ActionView::Helpers::TagHelper
 
-  attr_reader :admin_resource, :relation, :model, :parent, :legacy_params
+  attr_reader :admin_resource, :relation, :model, :parent, :legacy_params, :q
 
-  def initialize(admin_resource_name, list_options)
-    @admin_resource = AdminBuilder.admin_resource(admin_resource_name.to_sym)
-    @relation = list_options[:objects]
+  def initialize(admin_resource, list_options)
+    @admin_resource = admin_resource
+    @relation = list_options[:relation]
     @model = admin_resource.model
     @parent = list_options[:parent]
     @q = list_options[:q]
@@ -51,11 +51,13 @@ class ListBuilder
   end
 
   def list_headers
-    admin_resource.list_headers
+    admin_resource.list_column_templates.map { |template| ListHeader.new(self,  *template) }
   end
 
   def list_rows
-    relation.list_rows(admin_resource)
+    relation.map do |x|
+      admin_resource.list_column_templates.map { |template| x.list_column(*template) }
+    end
   end
 
   def trs
@@ -66,12 +68,21 @@ class ListBuilder
     content_tag(:tbody, trs)
   end
 
-  def sort_button_locals(header, order)
-    { model:, parent:, method: header.method, order:, legacy_params: }
+  def list_filters
+    admin_resource.list_filter_templates.map { |template| ListFilter.new(self, *template) }
+  end
+
+  def filter_form_params
+    new_q = { q: legacy_params[:q].slice(:s) }
+    legacy_params.merge(new_q)
   end
 
   def paginate_locals
-    { remote: true, model:, parent:, legacy_params: }
+    { list_paginator: }
+  end
+
+  def list_paginator
+    ListPaginator.new(self)
   end
 
   def admin_search_path
@@ -82,8 +93,11 @@ class ListBuilder
     router.public_send(*args)
   end
 
-  def filters
-    admin_resource.filters
+
+  def per_page_role
+    return "#{resource_part}-per-page" unless parent?
+
+    "#{parent_part}-#{resource_part}-per-page"
   end
 
   private

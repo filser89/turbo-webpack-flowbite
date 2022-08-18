@@ -1,4 +1,8 @@
 FactoryBot.define do
+  factory :list_paginator do
+    
+  end
+
   factory :list_filter do
     
   end

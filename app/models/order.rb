@@ -21,6 +21,12 @@ class Order < ApplicationRecord
       list_column :product
       list_column :user
       list_column :status
+      list_column :created_at
+    end
+    list_filters do
+      list_filter :product
+      list_filter :status
+      list_filter :created_at
     end
   end
 

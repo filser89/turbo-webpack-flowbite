@@ -1,12 +1,12 @@
 class AdminResource
-  attr_reader :model, :options, :name, :list_column_templates, :filter_templates, :show_list_names
+  attr_reader :model, :options, :name, :list_column_templates, :list_filter_templates, :show_list_names
 
   def initialize(model, options = {})
     @model = model
     @options = options
     @name = options[:name] || model.to_table_sym
     @list_column_templates = options[:list_column_templates] || []
-    @filter_templates = options[:filter_templates] || []
+    @list_filter_templates = options[:list_filter_templates] || []
     @show_list_names = options[:show_list_names] || []
   end
 
@@ -20,10 +20,6 @@ class AdminResource
 
   def model_name
     model.name
-  end
-
-  def list_headers
-    list_column_templates.map { |template| ListHeader.new(model, *template) }
   end
 
   def filters

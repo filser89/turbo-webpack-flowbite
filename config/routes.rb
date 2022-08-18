@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :user, only: %i[show]
   # admin CRUD routes
 
-  AdminBuilder.load_admin_resources if Rails.env.development?
+  AdminBuilder.require_models if Rails.env.development?
 
   namespace :admin do
     AdminBuilder.admin_resources.each do |admin_resource|
@@ -16,7 +16,7 @@ Rails.application.routes.draw do
         admin_resource.show_lists.each do |list|
           resources list.name, only: %i[] do
             collection do
-              match 'search' => "#{admin_resource.name}#search",
+              match 'search' => "#{list.name}#search",
                 via: %i[get post],
                 as: :search,
                 defaults: { parent_model: admin_resource.model_name, model: list.model_name }
