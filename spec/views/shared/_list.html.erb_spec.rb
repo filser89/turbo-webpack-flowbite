@@ -1,32 +1,37 @@
 require 'rails_helper'
 
-class TestClass < ApplicationRecord
-  def self.load_schema!
-    @columns_hash = {}
+RSpec.describe 'app/views/shared/_list.html.erb' do
+  def list_options(model, parent = nil, legacy_params = {})
+    {
+      model:,
+      relation: model.page(1),
+      q: model.ransack,
+      parent:,
+      legacy_params:
+    }
   end
 
-end
+  def create_items(model, count)
+    create_list(model.to_s.downcase.to_sym, count)
+  end
 
-RSpec.describe 'app/views/shared/_list.html.erb' do
-  it 'renders a table of a given resource with columns specified in resource.class index_methods' do
-    # model = TestClass
-    # resource1 = double(column1: 'res1-col1', column2: 'res1-col2', column3: 'res1-col3')
+  context "when rendered on the first page" do
+    it "has pagination buttons: page buttons, next page, last page, doesn't have first page and prev page" do
+      create_items(Product, 50)
+      list_options = list_options(Product)
+      admin_resource = AdminResource.new(Product, { list_column_templates: [:name] })
+      list_builder = ListBuilder.new(admin_resource, list_options)
 
-    # # resource1 = TestClass.new
-    # resource2 = double(column1: 'res2-col1', column2: 'res2-col2', column3: 'res2-col3')
+      render partial: "shared/list", locals: { list_builder: }
 
-    # objects = double(self: [resource1, resource2], total_pages: 1)
-    # allow(model).to receive(:all).and_return(objects)
-
-
-    # expect(rendered).to have_selector("table")
-    3.times { create(:product) }
-    q = Product.ransack
-    objects = q.result.index_set.page(1)
-
-    render partial: "shared/list", locals: { model: Product, objects: , parent: nil, legacy_params: {}, q: }
-
-    expect(rendered).to have_selector("table tbody tr", count: 3)
-    expect(rendered).to have_selector("table#products-table")
+      # checking that the relevant pagination buttons are rendered (no first and prev)
+      expect(rendered).to have_tag(:nav, class: 'pagination') do
+        without_tag('button[data-role=pagination-first]')
+        without_tag('button[data-role=pagination-prev]')
+        with_tag('button[data-role=pagination-page]')
+        with_tag('button[data-role=pagination-next]')
+        with_tag('button[data-role=pagination-last]')
+      end
+    end
   end
 end

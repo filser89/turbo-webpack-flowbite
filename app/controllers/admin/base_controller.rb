@@ -3,7 +3,8 @@ class Admin::BaseController < ApplicationController
   before_action :set_parent, only: %i[index search], if: :parent?
   before_action :set_object, only: %i[show update destroy]
   before_action :set_legacy_params, only: %i[index search]
-  before_action :set_lists_list_options, only: %i[show]
+  # before_action :set_lists_list_options, only: %i[show]
+  before_action :set_show_builder, only: %i[show]
   rescue_from ActionController::MissingExactTemplate, with: :standard_view
 
   def index
@@ -14,6 +15,10 @@ class Admin::BaseController < ApplicationController
     p "===========@queries", @queries
     p @objects = @queries.inject(@q) { |o, a| o.send(*a) }
     set_list_options
+    admin_resource = AdminBuilder.admin_resource(controller_name.to_sym)
+    p "=====================================================", admin_resource
+    p controller_name
+    @list_builder = ListBuilder.new(admin_resource, @list_options)
   end
 
   def show; end
@@ -33,11 +38,11 @@ class Admin::BaseController < ApplicationController
 
   def set_list_options
     @list_options = {
-      model: @model,
-      objects: @objects,
+      relation: @objects,
       parent: @parent,
       q: @q,
-      legacy_params: @legacy_params
+      legacy_params: @legacy_params,
+      model: @model
     }
   end
 
@@ -46,6 +51,7 @@ class Admin::BaseController < ApplicationController
       per: params[:per],
       q: {}
     }
+    p '====================================='
     @legacy_params[:q] = params[:q].to_unsafe_h if params[:q].present?
   end
 
@@ -75,16 +81,22 @@ class Admin::BaseController < ApplicationController
     params[:parent_model].present?
   end
 
+  def set_show_builder
+    admin_resource = AdminBuilder.admin_resource(controller_name.to_sym)
+    @show_builder = ShowBuilder.new(admin_resource, @object)
+  end
+
   # creates instance_variables i.e @products_list_options in order to render show lists of @object
   def set_lists_list_options
     @object.show_lists.each do |list|
-      objects = @object.public_send(list).page(1)
+      relation = @object.public_send(list).page(1)
       list_options = {
         model: list.s_to_model,
-        objects:,
+        relation:,
         parent: @object,
         q: objects.ransack({}),
-        legacy_params: {}
+        legacy_params: {},
+        # table_builder: TableBuilder.new(objects)
       }
       instance_variable_set(:"@#{list}_list_options", list_options)
     end

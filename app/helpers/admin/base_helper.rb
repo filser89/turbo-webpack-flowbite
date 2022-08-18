@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module Admin::BaseHelper
-  # merges existing params forpagination/filters with new sort params
-  def sort_params(method, order, legacy_params)
-    return { q: { s: ["#{method} #{order}"] }, per: legacy_params[:per] } unless legacy_params[:q].present?
+  # merges existing params for pagination/filters with new sort params
+  # def sort_params(method, order, legacy_params)
+  #   return { q: { s: ["#{method} #{order}"] }, per: legacy_params[:per] } unless legacy_params[:q].present?
 
-    { q: legacy_params[:q]&.merge({ s: ["#{method} #{order}"] }), per: legacy_params[:per] }
-  end
+  #   { q: legacy_params[:q]&.merge({ s: ["#{method} #{order}"] }), per: legacy_params[:per] }
+  # end
 
   # checks if the mrethod is an association
   def is_assoc?(model, method)
