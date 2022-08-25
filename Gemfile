@@ -47,12 +47,14 @@ gem "bootsnap", require: false
 gem 'devise'
 gem 'kaminari'
 gem 'ransack'
-
+gem 'simple_form'
+gem 'simple_form-tailwind'
 # Use Sass to process CSS
 # gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
+
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -88,3 +90,5 @@ gem "factory_bot_rails", "~> 6.2", :groups => [:development, :test]
 gem "database_cleaner", "~> 2.0", :group => :test
 
 gem 'spring-commands-rspec', group: :development
+
+gem "simple-form-datepicker", "~> 0.1.3"

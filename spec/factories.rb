@@ -1,4 +1,12 @@
 FactoryBot.define do
+  factory :form_builder do
+    
+  end
+
+  factory :form_field do
+    
+  end
+
   factory :list_paginator do
     
   end

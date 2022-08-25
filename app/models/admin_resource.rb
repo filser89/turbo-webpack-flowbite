@@ -1,5 +1,5 @@
 class AdminResource
-  attr_reader :model, :options, :name, :list_column_templates, :list_filter_templates, :show_list_names
+  attr_reader :model, :options, :name, :list_column_templates, :list_filter_templates, :show_list_names, :form_field_templates
 
   def initialize(model, options = {})
     @model = model
@@ -8,6 +8,7 @@ class AdminResource
     @list_column_templates = options[:list_column_templates] || []
     @list_filter_templates = options[:list_filter_templates] || []
     @show_list_names = options[:show_list_names] || []
+    @form_field_templates = options[:form_field_templates] || []
   end
 
   def list_column_templates

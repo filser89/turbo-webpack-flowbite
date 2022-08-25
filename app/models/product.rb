@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
   include Administratable
 
-
+  has_one_attached :photo
   has_many :orders
   has_many :users, through: :orders
 
@@ -44,13 +44,16 @@ class Product < ApplicationRecord
       show_list :orders
       show_list :users
     end
-  end
 
-  admin_resource :cups do
-    list_columns do
-      list_column :description
+    form_fields do
+      form_field :name, :text_input
+      form_field :last_sold_date, :datepicker
+      form_field :available, :toggle
+      form_field :note, :text_area
+      form_field :photo, :file
     end
   end
+
 
   def self.filter_methods
     %i[name quantity updated_at]

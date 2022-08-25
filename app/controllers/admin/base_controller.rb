@@ -1,5 +1,5 @@
 class Admin::BaseController < ApplicationController
-  before_action :set_model, only: %i[index search show create update destroy]
+  before_action :set_model
   before_action :set_parent, only: %i[index search], if: :parent?
   before_action :set_object, only: %i[show update destroy]
   before_action :set_legacy_params, only: %i[index search]
@@ -24,6 +24,13 @@ class Admin::BaseController < ApplicationController
   def show; end
 
   def new
+    @object = @model.new
+    @admin_resource = AdminBuilder.admin_resource(controller_name.to_sym)
+    @form_builder = FormBuilder.new(@admin_resource)
+  end
+
+  def create
+    @object = @model.new(permitted_params)
   end
 
   def edit

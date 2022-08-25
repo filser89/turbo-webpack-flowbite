@@ -28,6 +28,13 @@ class Order < ApplicationRecord
       list_filter :status
       list_filter :created_at
     end
+    form_fields do
+      form_field :user, :dropdown, collection: User.all
+      form_field :product, :dropdown,  collection: Product.all
+      # form_field :status, :dropdown, collection:
+    end
+
+
   end
 
   def self.filter_methods

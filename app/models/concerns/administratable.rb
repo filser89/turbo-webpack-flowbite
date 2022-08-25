@@ -30,6 +30,15 @@ module Administratable
       template[:show_list_names] << list_name
     end
 
+    def form_fields
+      template[:form_field_templates] = []
+      yield
+    end
+
+    def form_field(field, partial, options = {})
+      template[:form_field_templates] << [field, partial, options]
+    end
+
     def admin_resources
       admin_resource_templates.map { |template| AdminResource.new(self, template) }
     end

@@ -1,0 +1,232 @@
+<button class="block whitespace-nowrap text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" data-modal-toggle="popup-modal">
+  New
+</button>
+<div id="popup-modal" tabindex="-1" class="hidden overflow-hidden fixed top-0 right-0 h-screen w-screen z-50 justify-center items-center flex" aria-modal="true" role="dialog">
+  <div class="relative w-full max-w-[95vw] max-h-[95vh] lg:max-w-4xl z-50 lg:max-h-[80vh] bg-white overflow-y-auto rounded-2xl">
+    <div class="relative p-4 rounded-lg shadow dark:bg-gray-700 overflow-y-scroll">
+      <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" data-modal-toggle="popup-modal">
+        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        <span class="sr-only">Close modal</span>
+      </button>
+      <div class="p-6 text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M12 14l9-5-9-5-9 5 9 5z" />
+          <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+        </svg>
+        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Add/edit a <%= @object %></h3>
+        <form>
+          <!-- Form Grid -->
+          <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <!-- Text input (floating label) -->
+            <!-- Date picker -->
+            <div class="relative">
+              <label for="" class="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Date picker</label>
+              <div class="h-fit relative">
+                <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                  <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                </div>
+                <input datepicker-autohide id="datepickerId"  type="text" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+              </div>
+            </div>
+            <!-- Date range -->
+            <div data-controller="datepicker" class="w-full justify-start flex flex-col">
+              <label for="" class="mr-auto block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Date range</label>
+              <div date-rangepicker id="dateRangePickerId" class="flex items-center">
+                <div class="relative">
+                  <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                  </div>
+                  <input data-start-target="<%"start_#{@index}_1"%>" name=<%"start_#{@index}_1"%> type="text" class="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date start">
+                </div>
+                <span class="mx-4 text-gray-500">to</span>
+                <div class="relative">
+                  <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                  </div>
+                  <input name=<%"end_#{@index}_2"%> type="text" class="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
+                </div>
+              </div>
+            </div>
+            <!-- Toggle -->
+            <div class="flex flex-wrap justify-start h-fit">
+              <div class="m-2">
+                <label for="checked-toggle" class="inline-flex relative items-center cursor-pointer">
+                  <input type="checkbox" value="" id="checked-toggle" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Checked toggle</span>
+                </label>
+              </div>
+              <div class="m-2">
+                <label for="default-toggle" class="inline-flex relative items-center cursor-pointer">
+                  <input type="checkbox" value="" id="default-toggle" class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Unchecked toggle</span>
+                </label>
+              </div>
+              <div class="m-2">
+                <label for="disabled-toggle" class="inline-flex relative items-center mb-5 cursor-pointer">
+                  <input type="checkbox" value="" id="disabled-toggle" class="sr-only peer" disabled>
+                  <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                  <span class="ml-3 text-sm font-medium text-gray-400 dark:text-gray-500">Disabled toggle</span>
+                </label>
+              </div>
+              <div class="m-2">
+                <label for="disabled-checked-toggle" class="inline-flex relative items-center cursor-pointer">
+                  <input type="checkbox" value="" id="disabled-checked-toggle" class="sr-only peer" checked disabled>
+                  <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                  <span class="ml-3 text-sm font-medium text-gray-400 dark:text-gray-500">Disabled checked</span>
+                </label>
+              </div>
+            </div>
+            <!-- Radios -->
+            <div>
+              <label for="" class="flex w-full mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Radio buttons</label>
+              <div class="flex">
+                <div class="flex items-center mr-4">
+                  <input checked id=<%= "inline-radio-1"%> type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                  <label for=<%= "inline-radio-1"%> class="py-2 pl-2 pr-4 text-sm font-medium text-gray-900 dark:text-gray-300">Option 1</label>
+                </div>
+                <div class="flex items-center mr-4">
+                  <input id=<%= "inline-radio-2"%> type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                  <label for=<%= "inline-radio-2"%> class="py-2 pl-2 pr-4 text-sm font-medium text-gray-900 dark:text-gray-300">Option 2</label>
+                </div>
+              </div>
+            </div>
+            <!-- Multiple choice dropdown -->
+            <div class="w-full justify-start flex flex-col">
+              <label for="" class="mr-auto block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Multiple choice dropdown</label>
+              <button id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch" class="inline-flex items-center p-3 text-sm font-medium text-center text-gray-700 bg-white rounded-lg hover:bg-gray-100 ring-1 ring-gray-300 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-200" type="button"><span class="mr-auto">Dropdown</span>
+                <svg class="ml-2 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+              <!-- Dropdown menu -->
+              <div id="dropdownSearch" class="hidden z-10 w-60 bg-white rounded shadow dark:bg-gray-700">
+                <div class="p-3">
+                  <label for="input-group-search" class="sr-only">Search</label>
+                  <div class="relative">
+                    <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                      <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <input type="text" id="input-group-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search">
+                  </div>
+                </div>
+                <ul class="overflow-y-auto px-3 pb-3 h-48 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
+                  <li>
+                    <div class="flex items-center pl-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                      <input checked id="checkbox-item" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                      <label for="checkbox-item" class="text-left p-1 ml-2 w-full text-sm font-medium text-gray-900 rounded dark:text-gray-300">All</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="flex items-center pl-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                      <input checked id="checkbox-item-1" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                      <label for="checkbox-item-1" class="text-left p-1 ml-2 w-full text-sm font-medium text-gray-900 rounded dark:text-gray-300">Option 1</label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Text area -->
+            <div>
+              <label for="message" class="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Text area</label>
+              <textarea id="message" rows="4" class="min-h-[50px] block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write text here..."></textarea>
+            </div>
+            <!-- Checkboxes -->
+            <div class="w-full justify-start flex flex-col">
+              <div class="mr-auto block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Checkbox
+              </div>
+              <div class="w-full space-x-2 flex justify-start">
+                <div class="my-1 flex items-center hover:bg-gray-100 pl-4 rounded-lg border border-gray-200 dark:border-gray-700 w-full">
+                  <input id=<%="bordered-checkbox-1"%> type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                  <label for=<%="bordered-checkbox-1"%> class="w-full text-left py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Check me</label>
+                </div>
+                <div class="my-1 flex items-center hover:bg-gray-100 pl-4 rounded-lg border border-gray-200 dark:border-gray-700 w-full">
+                  <input id=<%="bordered-checkbox-2"%> type="checkbox" value="" name="bordered-checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                  <label for=<%="bordered-checkbox-2"%> class="w-full text-left py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Check me</label>
+                </div>
+              </div>
+            </div>
+            <!-- Radios custom -->
+            <div class="col-span-2 w-full">
+              <h3 class="mb-2 text-lg font-medium text-gray-900 dark:text-white">Choose an instrument</h3>
+              <ul class="flex justify-between">
+                <li class="m-2">
+                  <input type="radio" id="vocals-option" name="hosting" value="vocals-option" class="hidden peer" required>
+                  <label for="vocals-option" class="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg ring ring-gray-200 cursor-pointer dark:hover:text-gray-300 dark:ring-gray-700 dark:peer-checked:text-blue-500 peer-checked:ring-blue-600 peer-checked:ring-2 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <div class="flex flex-col items-center justify-center">
+                      <div class="w-10 h-10 mb-1 bg-cover bg-center rounded-full"  style='background-image: url(https://res.cloudinary.com/doavb6txr/image/upload/v1658922935/mic_qgx7lb.svg);'></div>
+                      <div class="w-full text-lg text-gray-900">Vocals</div>
+                      <div class="w-full text-sm text-red-600">1 spot left</div>
+                      <div class="w-full text-xs">Earliest start <span>01.09.2022</span></div>
+                    </div>
+                  </label>
+                </li>
+                <li class="m-2">
+                  <input type="radio" id="drums-option" name="hosting" value="drums-option" class="hidden peer" required>
+                  <label for="drums-option" class="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg ring ring-gray-200 cursor-pointer dark:hover:text-gray-300 dark:ring-gray-700 dark:peer-checked:text-blue-500 peer-checked:ring-blue-600 peer-checked:ring-2 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <div class="flex flex-col items-center justify-center">
+                      <div class="w-10 h-10 mb-1 bg-cover bg-center rounded-full"  style='background-image: url(https://res.cloudinary.com/doavb6txr/image/upload/v1658842171/drum-set_2_1_1_odmo3q.svg);'></div>
+                      <div class="w-full text-lg text-gray-900">Drums</div>
+                      <div class="w-full text-sm text-gray-600">2 spots left</div>
+                      <div class="w-full text-xs">Earliest start <span>01.06.2022</span></div>
+                    </div>
+                  </label>
+                </li>
+                <li class="m-2">
+                  <input disabled type="radio" id="guitar-option" name="hosting" value="guitar-option" class="hidden peer" required>
+                  <label for="guitar-option" class="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg ring ring-gray-200 cursor-pointer dark:hover:text-gray-300 dark:ring-gray-700 dark:peer-checked:text-blue-500 peer-checked:ring-blue-600 peer-checked:ring-2 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <div class="flex flex-col items-center justify-center">
+                      <div class="w-10 h-10 mb-1 bg-cover bg-center rounded-full"  style='background-image: url(https://res.cloudinary.com/doavb6txr/image/upload/v1658922935/electric-guitar_4_2_tloyy3.svg);'></div>
+                      <div class="w-full text-lg text-gray-400">Guitar</div>
+                      <div class="w-full text-sm text-gray-400">Booked out</div>
+                      <div class="w-full text-xs text-gray-400">Earliest start <span>- to be ...</span></div>
+                    </div>
+                  </label>
+                </li>
+                <li class="m-2">
+                  <input type="radio" id="keyboard-option" name="hosting" value="keyboard-option" class="hidden peer" required>
+                  <label for="keyboard-option" class="inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg ring ring-gray-200 cursor-pointer dark:hover:text-gray-300 dark:ring-gray-700 dark:peer-checked:text-blue-500 peer-checked:ring-blue-600 peer-checked:ring-2 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <div class="flex flex-col items-center justify-center">
+                      <div class="w-10 h-10 mb-1 bg-cover bg-center rounded-full"  style='background-image: url(https://res.cloudinary.com/doavb6txr/image/upload/v1658922935/piano_2_uxpw4c.svg);'></div>
+                      <div class="w-full text-lg text-gray-900">Keyboard</div>
+                      <div class="w-full text-sm text-red-600">1 spot left</div>
+                      <div class="w-full text-xs">Earliest start <span>01.09.2022</span></div>
+                    </div>
+                  </label>
+                </li>
+              </ul>
+            </div>
+            <!-- File upload dropzone -->
+            <div class="col-span-2 flex flex-col justify-center items-center w-full">
+              <label for="" class="flex w-full mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">File upload dropzone</label>
+              <label for="dropzone-file" class="flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                <div class="flex flex-col justify-center items-center pt-5 pb-6">
+                  <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                  <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                </div>
+                <input id="dropzone-file" type="file" class="hidden" />
+              </label>
+            </div>
+            <!-- Normal dropdown -->
+            <div>
+              <label for="countries" class="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Dropdown</label>
+              <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option selected>Choose a country</option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="FR">France</option>
+                <option value="DE">Germany</option>
+              </select>
+            </div>
+          </div>
+          <!-- Form buttons -->
+          <div class="flex w-full justify-center items-center">
+            <button data-modal-toggle="popup-modal" type="submit" class="m-1 text-white h-fit bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-16 py-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+            <button data-modal-toggle="popup-modal" type="button" class="m-1 w-full sm:w-auto text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-16 py-3 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

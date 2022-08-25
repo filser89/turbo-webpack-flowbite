@@ -1,0 +1,24 @@
+<div>Hello from new</div>
+<!-- <%#= simple_form_for [:admin, @object] do |f| %>
+  <div class="grid gap-6 mb-6 md:grid-cols-2">
+    <%# @admin_resource.form_field_templates.each do |template| %>
+      <%# if template.second[:enum] == true %>
+        <%#= select_tag options_for_select(@object.class.send(:"#{template.first.to_s.pluralize}").to_a)  %>
+      <%# else %>
+        <div class="relative">
+          <%#= f.input_field *template %>
+          <%#= f.label template.first %>
+        </div>
+      <%# end %>
+    <%# end %>
+  <%#= f.submit %>
+<%# end %> -->
+<div class="w-full bg-green-200">
+  <%= simple_form_for [:admin, @object] do |f| %>
+    <div class="grid gap-6 mb-6 md:grid-cols-2">
+      <% @form_builder.form_fields.each do |form_field| %>
+        <%= render form_field.field_partial, f:, form_field: %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
