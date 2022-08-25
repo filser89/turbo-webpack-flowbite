@@ -50,7 +50,7 @@ class Product < ApplicationRecord
       form_field :last_sold_date, :datepicker
       form_field :available, :toggle
       form_field :note, :text_area
-      form_field :photo, :file
+      form_field :photo, :file, accepted_formats: %w[png svg]
     end
   end
 

@@ -11,7 +11,8 @@ module.exports = {
     './config/initializers/*.rb',
     './src/*.js',
     './node_modules/flowbite/**/*.js',
-    './node_modules/sortablejs/**/*.js'
+    './node_modules/sortablejs/**/*.js',
+    './app/models/*.rb'
   ],
 
   safelist: [
