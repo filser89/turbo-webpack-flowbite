@@ -10,7 +10,8 @@ class FormField
   # @param [Symbol] partial a name of a file
   # @param [Hash] options Options to modify the default behavior of the form
   #
-  def initialize(name, partial, options = {})
+  def initialize(form_builder, name, partial, options = {})
+    @form_builder = form_builder
     @name = name
     @partial = partial
     @options = options
@@ -36,9 +37,25 @@ class FormField
     options[:accepted_formats].present? ? accept_value : nil
   end
 
+  def assoc_display_method
+    assoc_model.display_method
+  end
+
   private
 
-  attr_reader :partial, :options
+  attr_reader :form_builder, :partial, :options
+
+  def model
+    form_builder.model
+  end
+
+  def assoc?
+    model.reflect_on_association(name).present?
+  end
+
+  def assoc_model
+    model.reflect_on_association(name).class_name.constantize if assoc?
+  end
 
   def humanized_accept
     accepted_formats.join(', ')

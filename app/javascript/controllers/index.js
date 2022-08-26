@@ -13,6 +13,8 @@ application.register("datepicker", DatepickerController)
 import HelloController from "./hello_controller.js"
 application.register("hello", HelloController)
 
+import Select2Controller from "./select2_controller.js"
+application.register("select2", Select2Controller)
+
 import SidebarController from "./sidebar_controller.js"
 application.register("sidebar", SidebarController)
-

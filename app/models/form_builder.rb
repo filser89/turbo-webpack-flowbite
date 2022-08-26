@@ -9,7 +9,7 @@ class FormBuilder
   end
 
   def form_fields
-    admin_resource.form_field_templates.map { |template| FormField.new(*template) }
+    admin_resource.form_field_templates.map { |template| FormField.new(self, *template) }
   end
 
   private
