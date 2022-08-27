@@ -22,7 +22,7 @@ class FormField
   end
 
   def collection
-    options[:collection] || []
+    options[:collection] if options[:collection].present?
   end
 
   def prompt
@@ -34,7 +34,7 @@ class FormField
   end
 
   def accept
-    options[:accepted_formats].present? ? accept_value : nil
+    accept_value if options[:accepted_formats].present?
   end
 
   def assoc_display_method

@@ -1,0 +1,22 @@
+<% icons = {
+  vocals: "https://res.cloudinary.com/doavb6txr/image/upload/v1658922935/mic_qgx7lb.svg",
+  drums: "https://res.cloudinary.com/doavb6txr/image/upload/v1658842171/drum-set_2_1_1_odmo3q.svg",
+  guitar: "https://res.cloudinary.com/doavb6txr/image/upload/v1658922935/electric-guitar_4_2_tloyy3.svg",
+  keyboard: "https://res.cloudinary.com/doavb6txr/image/upload/v1658922935/piano_2_uxpw4c.svg"
+} %>
+<div class="col-span-2 w-full">
+  <ul class="flex justify-between">
+    <%= f.collection_radio_buttons form_field.name, form_field.collection, :id, :instrument, item_wrapper_tag: :li, item_wrapper_class: "m-2"   do |b| %>
+      <%# raise %>
+      <%= b.radio_button(class: "hidden peer") %>
+      <%= b.label(class: "inline-flex justify-between items-center p-5 w-full text-gray-500 bg-white rounded-lg ring ring-gray-200 cursor-pointer dark:hover:text-gray-300 dark:ring-gray-700 dark:peer-checked:text-blue-500 peer-checked:ring-blue-600 peer-checked:ring-2 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700") do %>
+        <div class="flex flex-col items-center justify-center">
+          <div class="w-10 h-10 mb-1 bg-cover bg-center rounded-full"  style='background-image: url(<%= icons[b.object.instrument.to_sym] %>);'></div>
+          <div class="text-lg text-gray-900"><%= b.object.instrument.capitalize %></div>
+          <div class="text-sm text-red-600">1 spot left</div>
+          <div class="text-xs">Earliest start <span>01.09.2022</span></div>
+        </div>
+      <% end %>
+    <% end %>
+  </ul>
+</div>

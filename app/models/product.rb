@@ -1,9 +1,13 @@
 class Product < ApplicationRecord
+  RANKS = (0..7).to_a.freeze
+
   include Administratable
 
   has_one_attached :photo
   has_many :orders
   has_many :users, through: :orders
+  has_many :user_products
+  has_many :owners, through: :user_products, source: :user
 
 
   validates :name, presence: true
@@ -22,6 +26,11 @@ class Product < ApplicationRecord
     %i[name description quantity created_at updated_at caps_name]
     # {method: :name, style_type: :main, sort: :name_alph, class: 'some class' }
   end
+
+  def self.ranks_collection
+    RANKS.map { |rank| rank.zero? ? ['shitty', rank] : [rank, rank] }
+  end
+
 
   # column :name, data: { dog: 'dogggo' }
   # column :description, class: "tab-grey"
@@ -46,14 +55,15 @@ class Product < ApplicationRecord
     end
 
     form_fields do
-      form_field :name, :text_input
-      form_field :last_sold_date, :datepicker
-      form_field :available, :toggle
-      form_field :note, :text_area
-      form_field :photo, :file, accepted_formats: %w[png svg]
+      # form_field :name, :text_input
+      # form_field :last_sold_date, :datepicker
+      # form_field :available, :toggle
+      # form_field :note, :text_area
+      # form_field :photo, :file, accepted_formats: %w[png svg]
+      # form_field :owners, :dropdown, collection: User.all
+      form_field :rank, :checkboxes, collection: ranks_collection
     end
   end
-
 
   def self.filter_methods
     %i[name quantity updated_at]

@@ -1,4 +1,17 @@
 FactoryBot.define do
+  factory :student do
+    name { "MyString" }
+  end
+
+  factory :band_space do
+    instrument { "MyString" }
+  end
+
+  factory :user_product do
+    user { nil }
+    product { nil }
+  end
+
   factory :form_builder do
     
   end
